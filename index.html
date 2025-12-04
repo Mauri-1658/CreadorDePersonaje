@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Creador de Personajes RPG - Crea tu héroe para aventuras épicas"
+    />
+    <title>Creador de Personajes RPG</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Navegación -->
+    <nav id="mainNav" class="nav-hidden">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <span class="nav-icon">⚔️</span>
+          <h1>Creador RPG</h1>
+        </div>
+        <div class="nav-menu">
+          <button id="btnShowDashboard" class="nav-link">
+            <span>🏠</span> Mis Personajes
+          </button>
+          <button id="btnShowCreator" class="nav-link">
+            <span>➕</span> Crear
+          </button>
+          <div class="nav-user">
+            <span id="navUsername" class="username">Usuario</span>
+            <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sección Login/Registro -->
+    <section id="authSection" class="auth-section">
+      <div class="auth-container">
+        <div class="auth-header">
+          <h1 class="auth-title">⚔️ Creador de Personajes RPG ⚔️</h1>
+          <p class="auth-subtitle">
+            Forja tu leyenda en los reinos fantásticos
+          </p>
+        </div>
+
+        <div class="auth-forms">
+          <!-- Formulario de Login -->
+          <div id="loginForm" class="auth-form-container">
+            <h2 class="form-title">Iniciar Sesión</h2>
+            <form id="formLogin" class="auth-form">
+              <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input
+                  type="email"
+                  id="loginEmail"
+                  name="email"
+                  required
+                  placeholder="tu@email.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-group">
+                <label for="loginPassword">Contraseña</label>
+                <input
+                  type="password"
+                  id="loginPassword"
+                  name="password"
+                  required
+                  placeholder="••••••"
+                  autocomplete="current-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+            <p class="form-toggle">
+              ¿No tienes cuenta?
+              <button id="showRegister" class="link-button">
+                Regístrate aquí
+              </button>
+            </p>
+          </div>
+
+          <!-- Formulario de Registro -->
+          <div id="registerForm" class="auth-form-container hidden">
+            <h2 class="form-title">Crear Cuenta</h2>
+            <form id="formRegister" class="auth-form">
+              <div class="form-group">
+                <label for="registerUsername">Nombre de Usuario</label>
+                <input
+                  type="text"
+                  id="registerUsername"
+                  name="username"
+                  required
+                  placeholder="Tu nombre"
+                  autocomplete="username"
+                />
+              </div>
+              <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input
+                  type="email"
+                  id="registerEmail"
+                  name="email"
+                  required
+                  placeholder="tu@email.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-group">
+                <label for="registerPassword">Contraseña</label>
+                <input
+                  type="password"
+                  id="registerPassword"
+                  name="password"
+                  required
+                  placeholder="Mínimo 6 caracteres"
+                  autocomplete="new-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Registrarse</button>
+            </form>
+            <p class="form-toggle">
+              ¿Ya tienes cuenta?
+              <button id="showLogin" class="link-button">Inicia sesión</button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Principal (Dashboard) -->
+    <main id="mainSection" class="main-section hidden">
+      <!-- Vista de Lista de Personajes -->
+      <section id="dashboardView" class="view-container">
+        <div class="section-header">
+          <h2 class="section-title">Mis Personajes</h2>
+          <button id="btnCreateNew" class="btn btn-secondary">
+            ➕ Crear Personaje
+          </button>
+        </div>
+        <div id="charactersList" class="characters-grid">
+          <!-- Los personajes se cargarán dinámicamente aquí -->
+        </div>
+        <div id="emptyState" class="empty-state hidden">
+          <p class="empty-icon">🐉</p>
+          <h3>No tienes personajes aún</h3>
+          <p>¡Crea tu primer héroe y comienza tu aventura!</p>
+          <button id="btnCreateFirst" class="btn btn-primary">
+            Crear Personaje
+          </button>
+        </div>
+      </section>
+
+      <!-- Vista de Creador de Personajes -->
+      <section id="creatorView" class="view-container hidden">
+        <div class="section-header">
+          <button id="btnBackToDashboard" class="btn-back">← Volver</button>
+          <h2 class="section-title" id="creatorTitle">Crear Nuevo Personaje</h2>
+        </div>
+
+        <form id="formCharacter" class="character-form">
+          <!-- Nombre del Personaje -->
+          <div class="form-section">
+            <label for="characterName" class="section-label"
+              >Nombre del Personaje</label
+            >
+            <input
+              type="text"
+              id="characterName"
+              name="name"
+              required
+              placeholder="Ej: Aragorn"
+              class="input-large"
+            />
+          </div>
+
+          <!-- Selección de Raza -->
+          <div class="form-section">
+            <label class="section-label">Selecciona tu Raza</label>
+            <div id="racesList" class="selection-grid">
+              <!-- Las razas se cargarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- Selección de Clase -->
+          <div class="form-section">
+            <label class="section-label">Selecciona tu Clase</label>
+            <div id="classesList" class="selection-grid">
+              <!-- Las clases se cargarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- Selección de Subclase -->
+          <div id="subclassSection" class="form-section hidden">
+            <label class="section-label">Especialización (Subclase)</label>
+            <div id="subclassesList" class="selection-grid">
+              <!-- Las subclases se cargarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- Visualización de Habilidades -->
+          <div id="abilitiesSection" class="form-section hidden">
+            <label class="section-label">Habilidades</label>
+            <div id="abilitiesContainer">
+              <div id="generalAbilities" class="abilities-group">
+                <h4 class="abilities-subtitle">Habilidades Generales</h4>
+                <div id="generalAbilitiesList" class="abilities-list"></div>
+              </div>
+              <div id="subclassAbilities" class="abilities-group">
+                <h4 class="abilities-subtitle">
+                  Habilidades de Especialización
+                </h4>
+                <div id="subclassAbilitiesList" class="abilities-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="form-actions">
+            <button
+              type="button"
+              id="btnCancelCreate"
+              class="btn btn-secondary"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              id="btnSubmitCharacter"
+              class="btn btn-primary"
+            >
+              Crear Personaje
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 Creador de Personajes RPG</p>
+      <a href="credits.html" class="footer-link">Créditos y Atribuciones</a>
+    </footer>
+
+    <!-- Notificaciones Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/creator.js"></script>
+  </body>
+</html>

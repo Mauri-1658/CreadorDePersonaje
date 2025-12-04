@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créditos - Creador de Personajes RPG</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        .credits-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+            min-height: 100vh;
+        }
+        
+        .credits-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .credits-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+        }
+        
+        .credits-section {
+            background: var(--color-secondary-dark);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .credits-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+            border-bottom: 2px solid var(--color-accent-gold);
+            padding-bottom: var(--space-sm);
+        }
+        
+        .credit-item {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .credit-item h3 {
+            font-size: 1.125rem;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .credit-item p {
+            color: var(--color-text-soft);
+            line-height: 1.8;
+        }
+        
+        .credit-item a {
+            color: var(--color-accent-purple);
+            text-decoration: none;
+        }
+        
+        .credit-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: var(--space-xl);
+            color: var(--color-accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="credits-container">
+        <div class="credits-header">
+            <h1 class="credits-title">⚔️ Créditos y Atribuciones ⚔️</h1>
+            <p>Recursos utilizados en el Creador de Personajes RPG</p>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Tipografías</h2>
+            
+            <div class="credit-item">
+                <h3>Cinzel</h3>
+                <p>
+                    <strong>Autor:</strong> Natanael Gama<br>
+                    <strong>Licencia:</strong> SIL Open Font License, 1.1<br>
+                    <strong>Fuente:</strong> <a href="https://fonts.google.com/specimen/Cinzel" target="_blank">Google Fonts</a><br>
+                    <strong>Uso:</strong> Títulos y encabezados medievales
+                </p>
+            </div>
+            
+            <div class="credit-item">
+                <h3>Inter</h3>
+                <p>
+                    <strong>Autor:</strong> Rasmus Andersson<br>
+                    <strong>Licencia:</strong> SIL Open Font License, 1.1<br>
+                    <strong>Fuente:</strong> <a href="https://fonts.google.com/specimen/Inter" target="_blank">Google Fonts</a><br>
+                    <strong>Uso:</strong> Texto de cuerpo y elementos de interfaz
+                </p>
+            </div>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Iconos y Emojis</h2>
+            
+            <div class="credit-item">
+                <h3>Unicode Emoji</h3>
+                <p>
+                    <strong>Fuente:</strong> Emojis estándar Unicode<br>
+                    <strong>Licencia:</strong> Dominio público / Sistema operativo<br>
+                    <strong>Uso:</strong> Iconos de razas, clases y elementos decorativos<br>
+                    Los emojis utilizados (⚔️, 🛡️, 🔥, 🧝, 🪓, etc.) son parte del estándar Unicode y se renderizan según el sistema operativo del usuario.
+                </p>
+            </div>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Imágenes de Razas</h2>
+            
+            <div class="credit-item">
+                <h3>Placeholder Images</h3>
+                <p>
+                    <strong>Nota:</strong> Las imágenes de las razas deben ser añadidas por el usuario.<br>
+                    Se recomienda usar imágenes con licencias Creative Commons o royalty-free de sitios como:<br>
+                    - <a href="https://unsplash.com" target="_blank">Unsplash</a> (Licencia Unsplash)<br>
+                    - <a href="https://pixabay.com" target="_blank">Pixabay</a> (Licencia Pixabay)<br>
+                    - <a href="https://www.pexels.com" target="_blank">Pexels</a> (Licencia Pexels)<br>
+                    <br>
+                    <strong>Rutas esperadas:</strong><br>
+                    - assets/images/races/human.png<br>
+                    - assets/images/races/elf.png<br>
+                    - assets/images/races/dwarf.png<br>
+                    - assets/images/races/orc.png<br>
+                    - assets/images/races/dragonborn.png
+                </p>
+            </div>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Herramientas y Tecnologías</h2>
+            
+            <div class="credit-item">
+                <h3>Tecnologías Utilizadas</h3>
+                <p>
+                    - <strong>PHP:</strong> Lenguaje de servidor para la API REST<br>
+                    - <strong>MySQL:</strong> Sistema de gestión de base de datos<br>
+                    - <strong>JavaScript:</strong> Lenguaje de cliente para interactividad<br>
+                    - <strong>HTML5 & CSS3:</strong> Estructura y estilos modernos<br>
+                    - <strong>XAMPP:</strong> Entorno de desarrollo local
+                </p>
+            </div>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Proyecto Académico</h2>
+            
+            <div class="credit-item">
+                <p>
+                    Este proyecto fue desarrollado como parte de la evaluación académica para los módulos:<br>
+                    - <strong>RA4:</strong> Desarrollo de aplicaciones web embebidas<br>
+                    - <strong>RA6:</strong> Acceso a almacenes de datos<br>
+                    - <strong>Desarrollo Web Cliente:</strong> RA2-RA6<br>
+                    - <strong>Diseño de Interfaces:</strong> RA1-RA4<br>
+                    <br>
+                    <strong>Año:</strong> 2025<br>
+                    <strong>Centro:</strong> ILERNA
+                </p>
+            </div>
+        </div>
+        
+        <div class="credits-section">
+            <h2>Licencia del Proyecto</h2>
+            
+            <div class="credit-item">
+                <p>
+                    Todo el código fuente de este proyecto (HTML, CSS, JavaScript, PHP) está disponible para uso educativo.<br>
+                    Se permite su uso, modificación y distribución con fines académicos.<br>
+                    <br>
+                    <strong>© 2025 - Creador de Personajes RPG</strong>
+                </p>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-link">← Volver a la Aplicación</a>
+    </div>
+</body>
+</html>
