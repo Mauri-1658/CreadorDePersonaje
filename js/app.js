@@ -13,7 +13,7 @@ const AppState = {
 };
 
 // === CONFIGURACIÓN DE LA API ===
-const API_BASE = "/DAW/Ilerna/CreadorDePersonaje/api/endpoints";
+const API_BASE = "api/endpoints";
 
 // === ELEMENTOS DEL DOM ===
 const DOM = {
@@ -29,7 +29,6 @@ const DOM = {
   // Navegación
   navUsername: document.getElementById("navUsername"),
   btnShowDashboard: document.getElementById("btnShowDashboard"),
-  btnShowCreator: document.getElementById("btnShowCreator"),
   btnLogout: document.getElementById("btnLogout"),
 
   // Dashboard
@@ -42,6 +41,7 @@ const DOM = {
   btnBackToDashboard: document.getElementById("btnBackToDashboard"),
   btnCancelCreate: document.getElementById("btnCancelCreate"),
   creatorTitle: document.getElementById("creatorTitle"),
+  btnSubmitCharacter: document.getElementById("btnSubmitCharacter"),
 
   // Toast y Loading
   toastContainer: document.getElementById("toastContainer"),
@@ -262,18 +262,6 @@ function renderCharactersGrid(characters) {
 // Navegación
 DOM.btnShowDashboard.addEventListener("click", () => {
   switchView("dashboard");
-});
-
-DOM.btnShowCreator.addEventListener("click", () => {
-  // Resetear formulario y estado de edición
-  AppState.editingCharacterId = null;
-  DOM.creatorTitle.textContent = "Crear Nuevo Personaje";
-
-  if (typeof resetCreatorForm === "function") {
-    resetCreatorForm();
-  }
-
-  switchView("creator");
 });
 
 DOM.btnLogout.addEventListener("click", handleLogoutClick);

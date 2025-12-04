@@ -46,6 +46,15 @@ const ClassIcons = {
     'Pícaro': '🗡️'
 };
 
+// === MAPEO DE NOMBRES DE CLASES A CARPETAS ===
+const ClassFolderNames = {
+    'Guerrero': 'warrior',
+    'Clérigo': 'priest',
+    'Mago': 'mage',
+    'Cazador': 'hunter',
+    'Pícaro': 'rogue'
+};
+
 // === FUNCIONES DE CARGA DE DATOS ===
 
 /**
@@ -162,7 +171,18 @@ function renderRaces(races) {
         
         const icon = document.createElement('div');
         icon.className = 'selection-icon';
-        icon.textContent = RaceIcons[race.name] || '🎭';
+        
+        // Usar imagen de la raza si está disponible
+        if (race.image_path) {
+            const img = document.createElement('img');
+            img.src = race.image_path;
+            img.alt = race.name;
+            img.className = 'race-image';
+            icon.appendChild(img);
+        } else {
+            // Fallback a emoji si no hay imagen
+            icon.textContent = RaceIcons[race.name] || '🎭';
+        }
         
         const name = document.createElement('div');
         name.className = 'selection-name';
@@ -199,7 +219,25 @@ function renderClasses(classes) {
         
         const icon = document.createElement('div');
         icon.className = 'selection-icon';
-        icon.textContent = ClassIcons[cls.name] || '⚔️';
+        
+        // Usar imagen del logo de la clase si está disponible
+        const folderName = ClassFolderNames[cls.name];
+        if (folderName) {
+            const img = document.createElement('img');
+            const imagePath = `assets/images/classes/${folderName}/logo${folderName.charAt(0).toUpperCase() + folderName.slice(1)}.png`;
+            img.src = imagePath;
+            img.alt = cls.name;
+            img.className = 'class-logo';
+            img.onerror = function() {
+                // Fallback a emoji si no se encuentra la imagen
+                this.style.display = 'none';
+                icon.textContent = ClassIcons[cls.name] || '⚔️';
+            };
+            icon.appendChild(img);
+        } else {
+            // Fallback a emoji si no hay mapeo
+            icon.textContent = ClassIcons[cls.name] || '⚔️';
+        }
         
         const name = document.createElement('div');
         name.className = 'selection-name';
@@ -234,10 +272,31 @@ function renderClasses(classes) {
 function renderSubclasses(subclasses) {
     CreatorDOM.subclassesList.innerHTML = '';
     
+    // Obtener el nombre de la clase seleccionada
+    const selectedClass = CreatorState.classes.find(cls => cls.id === CreatorState.selectedClassId);
+    const classFolderName = selectedClass ? ClassFolderNames[selectedClass.name] : null;
+    
     subclasses.forEach(subcls => {
         const card = document.createElement('div');
         card.className = 'selection-card';
         card.dataset.subclassId = subcls.id;
+        
+        // Añadir icono/imagen de subclase si existe
+        if (classFolderName) {
+            const icon = document.createElement('div');
+            icon.className = 'selection-icon';
+            
+            const img = document.createElement('img');
+            img.src = `assets/images/classes/${classFolderName}/${subcls.name}/${subcls.name.toLowerCase()}.png`;
+            img.alt = subcls.name;
+            img.className = 'subclass-image';
+            img.onerror = function() {
+                // Si falla la carga, ocultar el icono
+                icon.style.display = 'none';
+            };
+            icon.appendChild(img);
+            card.appendChild(icon);
+        }
         
         const name = document.createElement('div');
         name.className = 'selection-name';
