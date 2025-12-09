@@ -55,6 +55,14 @@ const ClassLogoNames = {
     'rogue': 'logoRogue.png'
 };
 
+const CombinationSuffixes = {
+    'warrior': 'War',
+    'priest': 'Priest',
+    'mage': 'Mage',
+    'hunter': 'Hunter',
+    'rogue': 'Rogue'
+};
+
 const RaceIcons = {
     'Humano': '⚔️',
     'Elfo': '🧝',
@@ -136,7 +144,9 @@ function renderRaces(races) {
 
         if (race.image_path) {
             const img = document.createElement('img');
-            img.src = race.image_path;
+            // Ajustar ruta si estamos en views
+            const basePath = window.location.pathname.includes('/views/') ? '../' : '';
+            img.src = basePath + race.image_path;
             img.alt = race.name;
             img.className = 'race-image';
             icon.appendChild(img);
@@ -157,10 +167,19 @@ function renderRaces(races) {
 
 function renderClasses(classes) {
     CreatorDOM.classesList.innerHTML = '';
+
+    // Obtener raza seleccionada para las imágenes combinadas
+    const selectedRace = CreatorState.races.find(r => r.id === CreatorState.selectedRaceId);
+
     classes.forEach(cls => {
         const card = document.createElement('div');
         card.className = 'selection-card';
         card.dataset.classId = cls.id;
+
+        // Re-aplicar selección si ya estaba seleccionado
+        if (cls.id === CreatorState.selectedClassId) {
+            card.classList.add('selected');
+        }
 
         const icon = document.createElement('div');
         icon.className = 'selection-icon';
@@ -168,12 +187,40 @@ function renderClasses(classes) {
         const folderName = ClassFolderNames[cls.name];
         if (folderName) {
             const img = document.createElement('img');
-            img.src = `assets/images/classes/${folderName}/${ClassLogoNames[folderName]}`;
+            // Ajustar ruta si estamos en views
+            const basePath = window.location.pathname.includes('/views/') ? '../' : '';
+
+            // Lógica de imagen combinada o logo por defecto
+            let imagePath;
+            if (selectedRace) {
+                // Si hay raza seleccionada, intentar usar la imagen de combinación
+                // Formato: Combinaciones/[Raza]/[Raza][Sufijo].png
+                const suffix = CombinationSuffixes[folderName]; // e.g. 'War', 'Mage'
+                if (suffix) {
+                    imagePath = `${basePath}assets/images/Combinaciones/${selectedRace.name}/${selectedRace.name}${suffix}.png`;
+                } else {
+                    // Fallback
+                    imagePath = `${basePath}assets/images/classes/${folderName}/${ClassLogoNames[folderName]}`;
+                }
+            } else {
+                // Si no hay raza, usar logo de clase
+                imagePath = `${basePath}assets/images/classes/${folderName}/${ClassLogoNames[folderName]}`;
+            }
+
+            img.src = imagePath;
             img.alt = cls.name;
             img.className = 'class-logo';
+
+            // Manejo de error de carga para fallback al logo original si falla la combinación
             img.onerror = function () {
-                this.style.display = 'none';
+                // Si falló la combinación, intentar cargar el logo original
+                if (this.src.includes('Combinaciones')) {
+                    this.src = `${basePath}assets/images/classes/${folderName}/${ClassLogoNames[folderName]}`;
+                } else {
+                    this.style.display = 'none';
+                }
             };
+
             icon.appendChild(img);
         }
 
@@ -203,7 +250,9 @@ function renderSubclasses(subclasses) {
             const icon = document.createElement('div');
             icon.className = 'selection-icon';
             const img = document.createElement('img');
-            img.src = `assets/images/classes/${folderName}/${normalizeFileName(subcls.name)}/${normalizeFileName(subcls.name)}.png`;
+            // Ajustar ruta si estamos en views
+            const basePath = window.location.pathname.includes('/views/') ? '../' : '';
+            img.src = `${basePath}assets/images/classes/${folderName}/${normalizeFileName(subcls.name)}/${normalizeFileName(subcls.name)}.png`;
             img.alt = subcls.name;
             img.className = 'subclass-image';
             img.onerror = function () { icon.style.display = 'none'; };
@@ -254,6 +303,11 @@ function selectRace(raceId, card) {
     CreatorDOM.racesList.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     CreatorState.selectedRaceId = raceId;
+
+    // Re-renderizar clases para mostrar imágenes de combinación si existen
+    if (CreatorState.classes.length > 0) {
+        renderClasses(CreatorState.classes);
+    }
 }
 
 function selectClass(classId, card) {
@@ -444,6 +498,11 @@ async function loadCharacterForEdit(characterId) {
                 CreatorState.selectedRaceId = char.race_id;
                 const raceCard = CreatorDOM.racesList.querySelector(`[data-race-id="${char.race_id}"]`);
                 if (raceCard) raceCard.classList.add('selected');
+
+                // Re-renderizar clases para mostrar imágenes combinadas
+                if (CreatorState.classes.length > 0) {
+                    renderClasses(CreatorState.classes);
+                }
 
                 // Seleccionar clase
                 CreatorState.selectedClassId = char.class_id;
