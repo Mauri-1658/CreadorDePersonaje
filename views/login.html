@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Iniciar sesión - Creador de Personajes RPG" />
+    <title>Iniciar Sesión - Creador de Personajes RPG</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+    <!-- Contenedor de Partículas -->
+    <div id="particles"></div>
+
+    <!-- Navegación -->
+    <nav id="mainNav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-icon">⚔️</span>
+                <h1>Creador RPG</h1>
+            </a>
+            <div class="nav-menu">
+                <a href="../index.html" class="nav-link">
+                    <span>🏰</span> Inicio
+                </a>
+                <div class="nav-user">
+                    <span class="nav-link active">Iniciar Sesión</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Login/Registro -->
+    <section id="authSection" class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1 class="auth-title glow-title">⚔️ Creador de Personajes RPG ⚔️</h1>
+                <p class="auth-subtitle">
+                    Forja tu leyenda en los reinos fantásticos
+                </p>
+            </div>
+
+            <div class="auth-forms">
+                <!-- Formulario de Login -->
+                <div id="loginForm" class="auth-form-container animate-fadeInScale">
+                    <h2 class="form-title">Iniciar Sesión</h2>
+                    <form id="formLogin" class="auth-form">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" name="email" required placeholder="tu@email.com"
+                                autocomplete="email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Contraseña</label>
+                            <input type="password" id="loginPassword" name="password" required placeholder="••••••"
+                                autocomplete="current-password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                    <p class="form-toggle">
+                        ¿No tienes cuenta?
+                        <button id="showRegister" class="link-button">
+                            Regístrate aquí
+                        </button>
+                    </p>
+                </div>
+
+                <!-- Formulario de Registro -->
+                <div id="registerForm" class="auth-form-container hidden">
+                    <h2 class="form-title">Crear Cuenta</h2>
+                    <form id="formRegister" class="auth-form">
+                        <div class="form-group">
+                            <label for="registerUsername">Nombre de Usuario</label>
+                            <input type="text" id="registerUsername" name="username" required placeholder="Tu nombre"
+                                autocomplete="username" />
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" name="email" required placeholder="tu@email.com"
+                                autocomplete="email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Contraseña</label>
+                            <input type="password" id="registerPassword" name="password" required
+                                placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                    </form>
+                    <p class="form-toggle">
+                        ¿Ya tienes cuenta?
+                        <button id="showLogin" class="link-button">Inicia sesión</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notificaciones Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/nav.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>

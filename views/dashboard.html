@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mis Personajes - Creador de Personajes RPG" />
+    <title>Mis Personajes - Creador de Personajes RPG</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+    <!-- Contenedor de Partículas -->
+    <div id="particles"></div>
+
+    <!-- Navegación -->
+    <nav id="mainNav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-icon">⚔️</span>
+                <h1>Creador RPG</h1>
+            </a>
+            <div class="nav-menu">
+                <a href="../index.html" class="nav-link">
+                    <span>🏰</span> Inicio
+                </a>
+                <a href="dashboard.html" class="nav-link active">
+                    <span>📜</span> Mis Personajes
+                </a>
+                <a href="creator.html" class="nav-link">
+                    <span>⚔️</span> Crear Personaje
+                </a>
+                <div class="nav-user">
+                    <a href="profile.html" id="navUsername" class="btn-username">Usuario</a>
+                    <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Principal (Dashboard) -->
+    <main id="mainSection" class="main-section">
+        <!-- Vista de Lista de Personajes -->
+        <section id="dashboardView" class="view-container">
+            <div class="section-header">
+                <h2 class="section-title glow-title">📜 Mis Personajes</h2>
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchCharacters" class="search-input"
+                        placeholder="Buscar personaje por nombre, raza o clase...">
+                </div>
+            </div>
+            <div id="charactersList" class="characters-grid">
+                <!-- Los personajes se cargarán dinámicamente aquí -->
+            </div>
+            <div id="emptyState" class="empty-state hidden">
+                <p class="empty-icon">🐉</p>
+                <h3>No tienes personajes aún</h3>
+                <p>¡Crea tu primer héroe y comienza tu aventura!</p>
+                <a href="creator.html" class="hero-cta">
+                    ✨ Crear Personaje ✨
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Creador de Personajes RPG</p>
+        <a href="credits.html" class="footer-link">Créditos y Atribuciones</a>
+    </footer>
+
+    <!-- Notificaciones Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/nav.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+
+</html>

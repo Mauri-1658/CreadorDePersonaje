@@ -350,6 +350,8 @@ nav {
   padding: var(--space-sm);
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-brand:hover {
@@ -384,11 +386,18 @@ nav {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
+  text-decoration: none;
 }
 
 .nav-link:hover {
   background: var(--color-secondary-dark);
   color: var(--color-accent-gold);
+}
+
+.nav-link.active {
+  background: rgba(102, 126, 234, 0.2);
+  color: var(--color-accent-gold);
+  border: 1px solid rgba(102, 126, 234, 0.4);
 }
 
 .nav-user {
@@ -646,6 +655,87 @@ nav {
 
 .section-title {
   font-size: 2rem;
+}
+
+/* === Buscador de Personajes === */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  flex: 1;
+  margin-left: var(--space-lg);
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 1.2rem;
+  pointer-events: none;
+  transition: transform var(--transition-fast);
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 20px 14px 50px;
+  background: rgba(45, 36, 56, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 50px;
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.search-input::placeholder {
+  color: var(--color-text-soft);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: rgba(102, 126, 234, 0.6);
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+  background: rgba(45, 36, 56, 0.8);
+}
+
+.search-input:focus+.search-icon,
+.search-container:focus-within .search-icon {
+  transform: scale(1.2);
+}
+
+/* Mensaje de no resultados */
+.no-results {
+  text-align: center;
+  padding: var(--space-3xl);
+  color: var(--color-text-soft);
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.no-results h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+  color: var(--color-accent-gold);
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .search-container {
+    margin-left: 0;
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 /* === Grid de Personajes === */
