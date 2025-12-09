@@ -3,3 +3,5 @@
 [09-Dec-2025 19:18:11 Europe/Berlin] [LOGOUT] Resultado: {"success":true,"message":"Sesi\u00f3n cerrada correctamente"}
 [09-Dec-2025 20:27:13 Europe/Berlin] [LOGOUT] Instanciando Auth y llamando logout()
 [09-Dec-2025 20:27:13 Europe/Berlin] [LOGOUT] Resultado: {"success":true,"message":"Sesi\u00f3n cerrada correctamente"}
+[09-Dec-2025 20:34:51 Europe/Berlin] [LOGOUT] Instanciando Auth y llamando logout()
+[09-Dec-2025 20:34:51 Europe/Berlin] [LOGOUT] Resultado: {"success":true,"message":"Sesi\u00f3n cerrada correctamente"}
