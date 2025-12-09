@@ -43,6 +43,7 @@
                     <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
                 </div>
             </div>
+
         </div>
     </nav>
 
@@ -70,8 +71,15 @@
                             <span class="info-label">📅 Registrado:</span>
                             <span id="profileCreatedAt" class="info-value">-</span>
                         </div>
+                        <!-- Botón Admin (solo visible para administradores) -->
+                        <div id="adminButtonContainer" class="info-row hidden">
+                            <a href="admin.html" class="btn btn-admin">
+                                ⚙️ Panel de Administración
+                            </a>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Personaje Principal -->
                 <div class="profile-card">
@@ -88,7 +96,21 @@
                     </div>
                 </div>
 
+                <!-- Cambiar Nombre de Usuario -->
+                <div class="profile-card">
+                    <h3 class="profile-card-title">✏️ Cambiar Nombre de Usuario</h3>
+                    <form id="formChangeUsername" class="username-form">
+                        <div class="form-group">
+                            <label for="newUsername">Nuevo nombre de usuario</label>
+                            <input type="text" id="newUsername" name="new_username" required
+                                placeholder="Tu nuevo nombre de usuario" minlength="3" maxlength="50" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cambiar Nombre</button>
+                    </form>
+                </div>
+
                 <!-- Cambiar Contraseña -->
+
                 <div class="profile-card">
                     <h3 class="profile-card-title">🔒 Cambiar Contraseña</h3>
                     <form id="formChangePassword" class="password-form">
@@ -116,8 +138,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 Creador de Personajes RPG</p>
-        <a href="credits.html" class="footer-link">Créditos y Atribuciones</a>
+        <p>&copy; 2025 Nexo</p>
+        <a href="../credits.html" class="footer-link">Créditos y Atribuciones</a>
     </footer>
 
     <!-- Notificaciones Toast -->

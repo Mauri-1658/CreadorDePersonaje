@@ -66,20 +66,26 @@ body {
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   width: 100%;
   height: 100%;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(120, 81, 169, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(194, 97, 254, 0.1) 0%, transparent 50%);
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(120, 81, 169, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(194, 97, 254, 0.1) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   animation: bgPulse 8s ease-in-out infinite;
   z-index: 0;
 }
 
 @keyframes bgPulse {
-
   0%,
   100% {
     opacity: 0.5;
@@ -152,7 +158,6 @@ h6 {
 }
 
 @keyframes titleGlow {
-
   0%,
   100% {
     filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
@@ -228,7 +233,6 @@ h6 {
   z-index: 1;
 }
 
-
 .hero-brand {
   display: flex;
   flex-direction: column;
@@ -245,7 +249,7 @@ h6 {
 }
 
 .hero-brand-title {
-  font-family: 'MedievalSharp', cursive;
+  font-family: "MedievalSharp", cursive;
   /* Fuente estilo RPG/Hytale */
   font-size: 5rem;
   /* Un poco más grande para esta fuente */
@@ -259,7 +263,6 @@ h6 {
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -316,13 +319,18 @@ h6 {
 }
 
 .hero-cta::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -503,7 +511,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('../assets/images/Logo.png') no-repeat center center;
+  background: url("../assets/images/Logo.png") no-repeat center center;
   background-size: contain;
   border: none;
   cursor: pointer;
@@ -764,9 +772,11 @@ nav {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg,
-      var(--color-accent-purple) 0%,
-      #7c3aed 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-purple) 0%,
+    #7c3aed 100%
+  );
   color: white;
 }
 
@@ -867,7 +877,7 @@ nav {
   background: rgba(45, 36, 56, 0.8);
 }
 
-.search-input:focus+.search-icon,
+.search-input:focus + .search-icon,
 .search-container:focus-within .search-icon {
   transform: scale(1.2);
 }
@@ -913,15 +923,21 @@ nav {
 
 /* Efecto de luz que cruza la tarjeta */
 .character-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transform: rotate(45deg);
   transition: all 0.6s;
+  pointer-events: none; /* Permite clicks a través del efecto */
 }
 
 .character-card:hover::before {
@@ -1013,6 +1029,8 @@ nav {
 .character-actions {
   display: flex;
   gap: var(--space-sm);
+  position: relative;
+  z-index: 10;
 }
 
 .btn-edit,
@@ -1369,7 +1387,6 @@ nav {
 
 /* === Responsive Design === */
 
-
 @media (min-width: 769px) and (max-width: 1024px) {
   .characters-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1591,4 +1608,252 @@ a.btn-edit,
 /* Espaciado para vistas (Dashboard, Creador, Perfil, Login) */
 .view-container {
   padding-top: 40px;
+}
+
+/* ===================================
+   PANEL DE ADMINISTRACIÓN
+   =================================== */
+
+/* === Estadísticas === */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-dark) 0%,
+    rgba(45, 36, 56, 0.8) 100%
+  );
+  border: 1px solid var(--color-accent-gold);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent-gold);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* === Secciones Admin === */
+.admin-section {
+  background: var(--color-secondary-dark);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.admin-section-title {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-lg);
+  color: var(--color-accent-gold);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: var(--space-sm);
+}
+
+/* === Tabla de Usuarios === */
+.admin-table-container {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-table th {
+  background: rgba(102, 126, 234, 0.2);
+  color: var(--color-accent-gold);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.admin-table tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-table td {
+  color: var(--color-text-light);
+}
+
+/* === Botones de Acción Admin === */
+.btn-delete-user {
+  background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-delete-user:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.btn-toggle-admin {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-toggle-admin:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-toggle-admin.active {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  border-color: #28a745;
+}
+
+/* === Grid de Estadísticas Populares === */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-lg);
+}
+
+.admin-stats-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+}
+
+.admin-stats-card h4 {
+  color: var(--color-accent-gold);
+  margin-bottom: var(--space-md);
+  font-size: 1.1rem;
+}
+
+.stats-list {
+  list-style: none;
+}
+
+.stats-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-list li:last-child {
+  border-bottom: none;
+}
+
+.stat-count {
+  background: var(--color-accent-purple);
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* === Mensaje vacío === */
+.empty-message {
+  text-align: center;
+  color: var(--color-text-soft);
+  padding: var(--space-xl);
+  font-style: italic;
+}
+
+/* === Responsive Admin === */
+@media (max-width: 768px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table {
+    font-size: 0.85rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: var(--space-sm);
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Botón Admin en Perfil === */
+.btn-admin {
+  display: inline-block;
+  width: 100%;
+  margin-top: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-admin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-admin:active {
+  transform: translateY(0);
+}
+
+/* === Formulario Cambiar Username === */
+.username-form .btn {
+  margin-top: var(--space-lg);
 }

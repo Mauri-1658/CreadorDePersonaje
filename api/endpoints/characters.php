@@ -95,7 +95,9 @@ try {
                 exit();
             }
 
-            $result = $character->delete($data['id'], $userId);
+            $characterId = (int) $data['id'];
+            $result = $character->delete($characterId, $userId);
+
 
             if ($result['success']) {
                 http_response_code(200);

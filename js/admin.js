@@ -250,3 +250,19 @@ async function handleDeleteUser(userId, username) {
 
 console.log('Módulo Admin cargado');
 
+// === INICIALIZACIÓN ===
+document.addEventListener('DOMContentLoaded', async () => {
+    // Verificar que el usuario es admin
+    const isAdmin = await checkAdminStatus();
+    
+    if (!isAdmin) {
+        showToast('Acceso denegado: no eres administrador', 'error');
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
+        return;
+    }
+    
+    // Cargar datos del dashboard
+    loadAdminDashboard();
+});

@@ -73,6 +73,10 @@ async function checkUserSession() {
         if (data.success && data.user) {
             // Usuario autenticado
             updateNavForUser(data.user.username);
+            
+            // Verificar si es admin
+            checkAdminVisibility();
+            
             return true;
         } else {
             // No autenticado
@@ -85,6 +89,29 @@ async function checkUserSession() {
         return false;
     }
 }
+
+/**
+ * Verifica si el usuario es admin y muestra el link correspondiente
+ */
+async function checkAdminVisibility() {
+    try {
+        const response = await fetch(`${API_BASE}/admin.php`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        const adminLink = document.getElementById('adminLink');
+        
+        if (data.success && adminLink) {
+            adminLink.classList.remove('hidden');
+        }
+    } catch (error) {
+        // No es admin, no hacer nada
+        console.log('Usuario no es admin');
+    }
+}
+
 
 /**
  * Actualiza la navegación para usuario autenticado
@@ -178,12 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogout.addEventListener('click', handleLogout);
     }
 
-    // Verificar sesión en página de inicio
+    // Verificar sesión en todas las páginas (excepto login para evitar redirecciones)
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    if (currentPage === 'index.html' || currentPage === '' || currentPage === 'login.html') {
+    if (currentPage !== 'login.html') {
         checkUserSession();
     }
 });
+
 
 console.log('Script de navegación cargado');

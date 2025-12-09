@@ -12,12 +12,16 @@ const ProfileDOM = {
     profileEmail: document.getElementById('profileEmail'),
     profileCreatedAt: document.getElementById('profileCreatedAt'),
     formChangePassword: document.getElementById('formChangePassword'),
+    formChangeUsername: document.getElementById('formChangeUsername'),
+    newUsername: document.getElementById('newUsername'),
     currentPassword: document.getElementById('currentPassword'),
     newPassword: document.getElementById('newPassword'),
     confirmPassword: document.getElementById('confirmPassword'),
     mainCharacterEmpty: document.getElementById('mainCharacterEmpty'),
-    mainCharacterCard: document.getElementById('mainCharacterCard')
+    mainCharacterCard: document.getElementById('mainCharacterCard'),
+    adminButtonContainer: document.getElementById('adminButtonContainer')
 };
+
 
 // === CARGA DE PERFIL ===
 
@@ -35,6 +39,9 @@ async function loadProfile() {
         if (data.success) {
             renderProfileData(data.user);
             renderMainCharacter(data.main_character);
+            
+            // Verificar si es admin y mostrar botón
+            checkAdminButton();
         } else {
             showToast('Error al cargar perfil', 'error');
         }
@@ -45,6 +52,27 @@ async function loadProfile() {
         showLoading(false);
     }
 }
+
+/**
+ * Verifica si el usuario es admin y muestra el botón de admin
+ */
+async function checkAdminButton() {
+    try {
+        const response = await fetch(`${API_BASE}/admin.php`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && ProfileDOM.adminButtonContainer) {
+            ProfileDOM.adminButtonContainer.classList.remove('hidden');
+        }
+    } catch (error) {
+        // No es admin, el botón permanece oculto
+    }
+}
+
 
 function renderProfileData(user) {
     ProfileDOM.profileUsername.textContent = user.username;
@@ -174,6 +202,51 @@ async function handleChangePassword(event) {
     }
 }
 
+// === CAMBIAR NOMBRE DE USUARIO ===
+
+async function handleChangeUsername(e) {
+    e.preventDefault();
+
+    const newUsername = ProfileDOM.newUsername.value.trim();
+
+    if (newUsername.length < 3) {
+        showToast('El nombre debe tener al menos 3 caracteres', 'error');
+        return;
+    }
+
+    try {
+        showLoading(true);
+
+        const response = await fetch(`${API_BASE}/change-username.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ new_username: newUsername })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Nombre de usuario actualizado', 'success');
+            ProfileDOM.formChangeUsername.reset();
+            
+            // Actualizar el nombre en pantalla
+            ProfileDOM.profileUsername.textContent = newUsername;
+            const navUsername = document.getElementById('navUsername');
+            if (navUsername) navUsername.textContent = newUsername;
+            
+            localStorage.setItem('username', newUsername);
+        } else {
+            showToast(data.message || 'Error al cambiar nombre', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showToast('Error de conexión', 'error');
+    } finally {
+        showLoading(false);
+    }
+}
+
 // === INICIALIZACIÓN ===
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -181,6 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUserSession();
 
     ProfileDOM.formChangePassword.addEventListener('submit', handleChangePassword);
+    ProfileDOM.formChangeUsername.addEventListener('submit', handleChangeUsername);
 });
 
 console.log('Perfil cargado');

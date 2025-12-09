@@ -117,6 +117,14 @@ class Character {
                 return ['success' => false, 'message' => 'La subclase no pertenece a la clase seleccionada'];
             }
 
+            // Verificar que no exista otro personaje con el mismo nombre para este usuario
+            $stmt = $this->db->prepare("SELECT id FROM characters WHERE user_id = ? AND LOWER(name) = LOWER(?)");
+            $stmt->execute([$userId, $data['name']]);
+            
+            if ($stmt->fetch()) {
+                return ['success' => false, 'message' => 'Ya tienes un personaje con ese nombre'];
+            }
+
             // Insertar personaje
             $stmt = $this->db->prepare("
                 INSERT INTO characters (user_id, name, race_id, class_id, subclass_id, level)
@@ -132,6 +140,7 @@ class Character {
                 $data['subclass_id'],
                 $level
             ]);
+
 
             $characterId = $this->db->lastInsertId();
 

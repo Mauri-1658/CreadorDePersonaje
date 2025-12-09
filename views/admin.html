@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Panel de Administración - Creador de Personajes RPG" />
+    <title>Admin - Creador de Personajes RPG</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/images/Logo.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+    <!-- Contenedor de Partículas -->
+    <div id="particles"></div>
+
+    <!-- Navegación -->
+    <nav id="mainNav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand" aria-label="NEXO Inicio">
+            </a>
+            <div class="nav-menu">
+                <a href="dashboard.html" class="nav-link">
+                    Mis Personajes
+                </a>
+                <a href="creator.html" class="nav-link">
+                    Crear Personaje
+                </a>
+                <div class="nav-user">
+                    <a href="profile.html" id="navUsername" class="btn-username">Usuario</a>
+                    <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Vista de Admin Dashboard -->
+    <main id="mainSection" class="main-section">
+        <section id="adminView" class="view-container">
+            <div class="section-header">
+                <h2 class="section-title glow-title">⚙️ Panel de Administración</h2>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <span class="stat-icon">👥</span>
+                    <div class="stat-info">
+                        <span id="statUsers" class="stat-number">0</span>
+                        <span class="stat-label">Usuarios</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎭</span>
+                    <div class="stat-info">
+                        <span id="statCharacters" class="stat-number">0</span>
+                        <span class="stat-label">Personajes</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Usuarios -->
+            <div class="admin-section">
+                <h3 class="admin-section-title">👥 Usuarios Registrados</h3>
+                <div id="adminUsersTable" class="admin-table-container">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Estadísticas Populares -->
+            <div class="admin-section">
+                <h3 class="admin-section-title">📊 Estadísticas</h3>
+                <div class="admin-stats-grid">
+                    <div class="admin-stats-card">
+                        <h4>⚔️ Clases Populares</h4>
+                        <ul id="popularClasses" class="stats-list"></ul>
+                    </div>
+                    <div class="admin-stats-card">
+                        <h4>🎭 Razas Populares</h4>
+                        <ul id="popularRaces" class="stats-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Nexo</p>
+        <a href="../credits.html" class="footer-link">Créditos y Atribuciones</a>
+    </footer>
+
+    <!-- Notificaciones Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/nav.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+
+</html>

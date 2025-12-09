@@ -3,9 +3,12 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2025 a las 20:41:17
+-- Tiempo de generación: 09-12-2025 a las 23:23:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
+
+CREATE DATABASE IF NOT EXISTS `rpg_character_creator` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `rpg_character_creator`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -116,11 +119,22 @@ CREATE TABLE `characters` (
 --
 
 INSERT INTO `characters` (`id`, `user_id`, `name`, `race_id`, `class_id`, `subclass_id`, `level`, `created_at`, `updated_at`, `is_main`) VALUES
-(1, 1, 'asd', 3, 1, 2, 1, '2025-12-09 16:13:52', '2025-12-09 16:13:52', 0),
-(2, 1, 'Tixiords', 2, 5, 15, 1, '2025-12-09 16:17:37', '2025-12-09 17:47:55', 1),
-(3, 1, 'tyutyu', 2, 1, 3, 1, '2025-12-09 17:00:47', '2025-12-09 17:47:55', 0),
 (4, 2, 'erte', 3, 1, 2, 60, '2025-12-09 17:19:02', '2025-12-09 18:04:29', 1),
-(5, 2, 'Tixiords', 2, 2, 6, 58, '2025-12-09 18:06:12', '2025-12-09 18:06:12', 0);
+(5, 2, 'Tixiords', 2, 2, 6, 58, '2025-12-09 18:06:12', '2025-12-09 18:06:12', 0),
+(6, 1, 'Gimli Piedrahacha', 3, 1, 1, 10, '2025-12-09 21:36:56', '2025-12-09 21:36:56', 0),
+(7, 1, 'Aeliana Ascuas', 2, 3, 7, 15, '2025-12-09 21:36:56', '2025-12-09 21:36:56', 0),
+(8, 1, 'Tixrog', 2, 5, 15, 60, '2025-12-09 21:32:11', '2025-12-09 22:01:17', 1),
+(9, 1, 'erte', 1, 2, 6, 58, '2025-12-09 21:32:38', '2025-12-09 21:32:38', 0),
+(12, 1, 'Kaelus Vitalis', 5, 2, 5, 5, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(13, 1, 'Seraphina Sombras', 1, 5, 13, 22, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(14, 1, 'Grulok Colmillo', 4, 4, 12, 18, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(15, 1, 'Lira Escarcha', 2, 3, 8, 30, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(16, 1, 'Thomas El Justo', 1, 2, 6, 7, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(17, 1, 'Ragnar Furioso', 5, 1, 3, 25, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(18, 1, 'Borin Balista', 3, 4, 10, 12, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(19, 1, 'Zog El Invisible', 4, 5, 14, 8, '2025-12-09 21:37:34', '2025-12-09 21:37:34', 0),
+(22, 1, 'Tixiords', 3, 4, 10, 52, '2025-12-09 22:16:39', '2025-12-09 22:16:39', 0),
+(23, 1, 'Tix', 1, 1, 2, 25, '2025-12-09 22:20:19', '2025-12-09 22:20:19', 0);
 
 -- --------------------------------------------------------
 
@@ -224,7 +238,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `created_at`, `is_admin`) VALUES
-(1, 'Mauri', 'mauri@gmail.com', '$2y$10$C.e3qh20IsRtZn7Am8FpXuYoaYw13G0PF6spCKJ4f7HThxLmkS6Eq', '2025-12-09 16:01:19', 1),
+(1, 'Tixiords', 'mauri@gmail.com', '$2y$10$C.e3qh20IsRtZn7Am8FpXuYoaYw13G0PF6spCKJ4f7HThxLmkS6Eq', '2025-12-09 16:01:19', 1),
 (2, 'manuel', 'manuel@gmail.com', '$2y$10$y3kDJMHbp8yiS4d8kgS4EuHsDtGv4zdhcX9fy6OjDVfUjKIrVfntO', '2025-12-09 17:05:21', 0),
 (7, 'claudia', 'claudia@gmail.com', '$2y$10$Cbt7BAXc.0cBhyVGEBnd/.dSaoahTKkYZxIp7vCe5tJrA2wMUQs1u', '2025-12-09 19:36:36', 0);
 
@@ -294,7 +308,7 @@ ALTER TABLE `abilities`
 -- AUTO_INCREMENT de la tabla `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `classes`
