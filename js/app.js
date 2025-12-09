@@ -7,7 +7,7 @@
 const AppState = {
   currentUser: null,
   isAuthenticated: false,
-  currentView: "auth",
+  currentView: "hero",
   characters: [],
   editingCharacterId: null,
 };
@@ -18,6 +18,7 @@ const API_BASE = "api/endpoints";
 // === ELEMENTOS DEL DOM ===
 const DOM = {
   // Secciones principales
+  heroSection: document.getElementById("heroSection"),
   authSection: document.getElementById("authSection"),
   mainSection: document.getElementById("mainSection"),
   mainNav: document.getElementById("mainNav"),
@@ -30,14 +31,18 @@ const DOM = {
   // Navegación
   navBrand: document.getElementById("navBrand"),
   navUsername: document.getElementById("navUsername"),
+  btnShowHome: document.getElementById("btnShowHome"),
   btnShowDashboard: document.getElementById("btnShowDashboard"),
+  btnShowCreator: document.getElementById("btnShowCreator"),
   btnLogin: document.getElementById("btnLogin"),
   btnLogout: document.getElementById("btnLogout"),
+
+  // Hero
+  btnHeroStart: document.getElementById("btnHeroStart"),
 
   // Dashboard
   charactersList: document.getElementById("charactersList"),
   emptyState: document.getElementById("emptyState"),
-  btnCreateNew: document.getElementById("btnCreateNew"),
   btnCreateFirst: document.getElementById("btnCreateFirst"),
 
   // Creator
@@ -90,12 +95,13 @@ function showLoading(show) {
 
 /**
  * Cambia entre vistas de la aplicación
- * @param {string} view - 'auth', 'dashboard', 'creator', 'profile'
+ * @param {string} view - 'hero', 'auth', 'dashboard', 'creator', 'profile'
  */
 function switchView(view) {
   console.log(`Cambiando a vista: ${view}`);
 
   // Ocultar todas las secciones
+  DOM.heroSection.classList.add("hidden");
   DOM.authSection.classList.add("hidden");
   DOM.mainSection.classList.add("hidden");
   DOM.dashboardView.classList.add("hidden");
@@ -104,6 +110,11 @@ function switchView(view) {
 
   // Mostrar la vista solicitada
   switch (view) {
+    case "hero":
+      DOM.heroSection.classList.remove("hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      break;
+
     case "auth":
       DOM.authSection.classList.remove("hidden");
       DOM.mainNav.classList.remove("nav-hidden");
@@ -150,11 +161,13 @@ function updateUserInfo(isAuthenticated = false) {
     DOM.btnLogin.classList.add("hidden");
     DOM.btnLogout.classList.remove("hidden");
     DOM.btnShowDashboard.classList.remove("hidden");
+    DOM.btnShowCreator.classList.remove("hidden");
   } else {
     DOM.navUsername.classList.add("hidden");
     DOM.btnLogin.classList.remove("hidden");
     DOM.btnLogout.classList.add("hidden");
     DOM.btnShowDashboard.classList.add("hidden");
+    DOM.btnShowCreator.classList.add("hidden");
   }
 }
 
@@ -177,23 +190,13 @@ async function checkSession() {
     } else {
       AppState.isAuthenticated = false;
       updateUserInfo(false);
-      DOM.mainSection.classList.remove("hidden");
-      DOM.dashboardView.classList.remove("hidden");
-      DOM.mainNav.classList.remove("nav-hidden");
-      AppState.currentView = "dashboard";
-      DOM.charactersList.innerHTML = "";
-      DOM.emptyState.classList.remove("hidden");
+      switchView("hero");
     }
   } catch (error) {
     console.error("Error al verificar sesión:", error);
     AppState.isAuthenticated = false;
     updateUserInfo(false);
-    DOM.mainSection.classList.remove("hidden");
-    DOM.dashboardView.classList.remove("hidden");
-    DOM.mainNav.classList.remove("nav-hidden");
-    AppState.currentView = "dashboard";
-    DOM.charactersList.innerHTML = "";
-    DOM.emptyState.classList.remove("hidden");
+    switchView("hero");
   }
 }
 
@@ -285,25 +288,26 @@ function renderCharactersGrid(characters) {
 // === EVENT LISTENERS ===
 
 DOM.navBrand.addEventListener("click", () => {
-  switchView("dashboard");
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("hero");
+  }
+});
+
+DOM.btnShowHome.addEventListener("click", () => {
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("hero");
+  }
 });
 
 DOM.btnShowDashboard.addEventListener("click", () => {
   switchView("dashboard");
 });
 
-DOM.btnLogin.addEventListener("click", () => {
-  switchView("auth");
-});
-
-DOM.btnLogout.addEventListener("click", handleLogoutClick);
-
-// Nombre de usuario clickeable - lleva al perfil
-DOM.navUsername.addEventListener("click", () => {
-  switchView("profile");
-});
-
-DOM.btnCreateNew.addEventListener("click", () => {
+DOM.btnShowCreator.addEventListener("click", () => {
   if (!AppState.isAuthenticated) {
     showToast("Debes iniciar sesión para crear personajes", "warning");
     switchView("auth");
@@ -318,6 +322,26 @@ DOM.btnCreateNew.addEventListener("click", () => {
   }
 
   switchView("creator");
+});
+
+DOM.btnLogin.addEventListener("click", () => {
+  switchView("auth");
+});
+
+DOM.btnLogout.addEventListener("click", handleLogoutClick);
+
+// Nombre de usuario clickeable - lleva al perfil
+DOM.navUsername.addEventListener("click", () => {
+  switchView("profile");
+});
+
+// Botón Hero - Comenzar Aventura
+DOM.btnHeroStart.addEventListener("click", () => {
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("auth");
+  }
 });
 
 DOM.btnCreateFirst.addEventListener("click", () => {
