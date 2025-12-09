@@ -182,11 +182,23 @@ async function handleLogin(event) {
             // Limpiar formulario
             AuthDOM.formLogin.reset();
 
-            // Redirigir al dashboard
+            // Verificar redirección pendiente
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get('redirect');
+            const hasPending = localStorage.getItem('pendingCharacter');
+
             setTimeout(() => {
-                // Si estamos en views, el dashboard es sibling. Si no, views/dashboard.html
-                const dashboardPath = window.location.pathname.includes('/views/') ? 'dashboard.html' : 'views/dashboard.html';
-                window.location.href = dashboardPath;
+                let targetPath;
+                // Si estamos en views, el dashboard/creator es sibling. Si no, views/...
+                const isViews = window.location.pathname.includes('/views/');
+
+                if (redirect === 'creator' || hasPending) {
+                    targetPath = isViews ? 'creator.html' : 'views/creator.html';
+                } else {
+                    targetPath = isViews ? 'dashboard.html' : 'views/dashboard.html';
+                }
+
+                window.location.href = targetPath;
             }, 1000);
         } else {
             showToast(data.message || 'Credenciales incorrectas', 'error');

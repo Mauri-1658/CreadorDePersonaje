@@ -3,8 +3,13 @@
  * Versión simplificada para la página creator.html
  */
 
-// Verificar autenticación
-requireAuth();
+// Verificar autenticación (opcional, para UI)
+checkUserSession().then(isAuthenticated => {
+    // Si hay un personaje pendiente y el usuario acaba de loguearse, restaurarlo
+    if (isAuthenticated) {
+        checkPendingCharacter();
+    }
+});
 
 // === ELEMENTOS DEL DOM ===
 const CreatorDOM = {
@@ -305,31 +310,109 @@ async function handleSubmit(event) {
         characterData.id = CreatorState.editingId;
     }
 
+    if (isEditing) {
+        characterData.id = CreatorState.editingId;
+    }
+
     try {
-        showLoading(true);
-
-        const response = await fetch(`${API_BASE}/characters.php`, {
-            method: isEditing ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(characterData)
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            showToast(isEditing ? 'Personaje actualizado' : 'Personaje creado', 'success');
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 500);
+        if (isEditing) {
+            // Flujo normal de edición (usuario autenticado)
+            sendCharacterData(characterData, true);
         } else {
-            showToast(data.message || 'Error', 'error');
+            // Verificar sesión antes de crear
+            const isAuthenticated = await checkUserSession();
+
+            if (!isAuthenticated) {
+                // GUARDADO TEMPORAL
+                localStorage.setItem('pendingCharacter', JSON.stringify(characterData));
+
+                showToast('🔑 Inicia sesión para guardar tu héroe', 'info');
+
+                setTimeout(() => {
+                    window.location.href = 'login.html?redirect=creator';
+                }, 1500);
+                return;
+            }
+
+            // Si está autenticado, enviar
+            sendCharacterData(characterData, false);
         }
     } catch (error) {
         console.error('Error:', error);
         showToast('Error de conexión', 'error');
+    }
+}
+
+async function sendCharacterData(data, isEditing) {
+    try {
+        showLoading(true);
+        const response = await fetch(`${API_BASE}/characters.php`, {
+            method: isEditing ? 'PUT' : 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(data)
+        });
+
+        const resData = await response.json();
+
+        if (resData.success) {
+            showToast(isEditing ? 'Personaje actualizado' : 'Personaje creado', 'success');
+            // Limpiar pendiente si existía
+            localStorage.removeItem('pendingCharacter');
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 500);
+        } else {
+            showToast(resData.message || 'Error', 'error');
+        }
+    } catch (error) {
+        console.error('Error al guardar:', error);
+        showToast('Error de conexión', 'error');
     } finally {
         showLoading(false);
+    }
+}
+
+function checkPendingCharacter() {
+    const pending = localStorage.getItem('pendingCharacter');
+    if (pending) {
+        try {
+            const charData = JSON.parse(pending);
+            showToast('🔄 Restaurando tu héroe pendiente...', 'info');
+
+            CreatorDOM.characterName.value = charData.name;
+            CreatorDOM.characterLevel.value = charData.level;
+
+            // Esperar carga de datos
+            setTimeout(() => {
+                if (charData.race_id) {
+                    CreatorState.selectedRaceId = charData.race_id;
+                    const el = document.querySelector(`[data-race-id="${charData.race_id}"]`);
+                    if (el) el.classList.add('selected');
+                }
+                if (charData.class_id) {
+                    CreatorState.selectedClassId = charData.class_id;
+                    const el = document.querySelector(`[data-class-id="${charData.class_id}"]`);
+                    if (el) el.classList.add('selected');
+
+                    loadSubclasses(charData.class_id).then(() => {
+                        setTimeout(() => {
+                            if (charData.subclass_id) {
+                                CreatorState.selectedSubclassId = charData.subclass_id;
+                                const subEl = document.querySelector(`[data-subclass-id="${charData.subclass_id}"]`);
+                                if (subEl) subEl.classList.add('selected');
+                                loadAbilities(charData.class_id, charData.subclass_id);
+                            }
+                        }, 500);
+                    });
+                }
+            }, 1000);
+
+            // Podríamos auto-guardar aquí, pero mejor dejar que el usuario revise y guarde
+        } catch (e) {
+            console.error('Error restaurando pendingCharacter', e);
+        }
     }
 }
 
