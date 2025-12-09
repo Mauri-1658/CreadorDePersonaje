@@ -11,8 +11,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&family=MedievalSharp&display=swap"
     rel="stylesheet" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/Logo.png">
 
   <!-- CSS -->
   <link rel="stylesheet" href="css/styles.css" />
@@ -25,17 +28,15 @@
   <!-- Navegación -->
   <nav id="mainNav">
     <div class="nav-container">
-      <a href="index.html" class="nav-brand">
-        <span class="nav-icon">⚔️</span>
-        <h1>Creador RPG</h1>
+      <a href="index.html" class="nav-brand" aria-label="NEXO Inicio">
       </a>
       <div class="nav-menu">
 
         <a href="views/dashboard.html" class="nav-link" id="linkDashboard">
-          <span>📜</span> Mis Personajes
+          Mis Personajes
         </a>
         <a href="views/creator.html" class="nav-link" id="linkCreator">
-          <span>⚔️</span> Crear Personaje
+          Crear Personaje
         </a>
         <div class="nav-user">
           <a href="views/profile.html" id="navUsername" class="btn-username hidden">Usuario</a>
@@ -49,12 +50,16 @@
   <!-- Sección Hero (Home) -->
   <section id="heroSection" class="hero-section">
     <div class="hero-content">
+      <div class="hero-brand">
+        <img src="assets/images/Logo.png" alt="NEXO Logo" class="hero-logo">
+        <h2 class="hero-brand-title">NEXO</h2>
+      </div>
       <h1 class="hero-title">FORJA TU LEYENDA</h1>
       <p class="hero-subtitle">
         Crea héroes épicos, elige entre razas místicas y clases legendarias.<br>
         Tu aventura en los reinos fantásticos comienza aquí.
       </p>
-      <a href="views/creator.html" id="btnHeroStart" class="hero-cta">✨ COMENZAR AVENTURA ✨</a>
+      <a href="views/creator.html" id="btnHeroStart" class="hero-cta"> COMENZAR AVENTURA </a>
     </div>
   </section>
 

@@ -71,10 +71,47 @@ function renderMainCharacter(character) {
         return;
     }
 
-    ProfileDOM.mainCharacterEmpty.classList.add('hidden');
+    // Mapeo robusto igual que en creator-page.js
+    const ClassFolderNames = {
+        'Guerrero': 'warrior',
+        'Clérigo': 'priest',
+        'Mago': 'mage',
+        'Cazador': 'hunter',
+        'Pícaro': 'rogue'
+    };
+
+    const CombinationSuffixes = {
+        'warrior': 'War',
+        'priest': 'Priest',
+        'mage': 'Mage',
+        'hunter': 'Hunter',
+        'rogue': 'Rogue'
+    };
+
+    const raceName = character.race_name ? character.race_name.trim() : '';
+    const className = character.class_name ? character.class_name.trim() : '';
+
+    // Cadena de resolución: Nombre Clase -> Carpeta -> Sufijo
+    const folderName = ClassFolderNames[className];
+    const suffix = folderName ? CombinationSuffixes[folderName] : null;
+
+    let imageHtml = '';
+
+    if (raceName && suffix) {
+        const basePath = '../';
+        const imagePath = `${basePath}assets/images/Combinaciones/${raceName}/${raceName}${suffix}.png`;
+        imageHtml = `
+            <div class="main-char-image-container">
+                <img src="${imagePath}" alt="${raceName} ${className}" class="main-char-image" onerror="this.parentElement.style.display='none'">
+            </div>
+        `;
+    }
+
     ProfileDOM.mainCharacterCard.classList.remove('hidden');
+    ProfileDOM.mainCharacterEmpty.classList.add('hidden');
 
     ProfileDOM.mainCharacterCard.innerHTML = `
+        ${imageHtml}
         <div class="main-char-header">
             <span class="main-star">⭐</span>
             <h4 class="main-char-name">${character.name}</h4>

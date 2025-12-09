@@ -98,9 +98,48 @@ function createCharacterCard(character) {
     const header = document.createElement('div');
     header.className = 'character-header';
 
-    const icon = document.createElement('span');
+    const icon = document.createElement('div');
     icon.className = 'character-icon';
-    icon.textContent = RaceIcons[character.race_name] || '🎭';
+
+    // Mapeo robusto igual que en profile y creator
+    const ClassFolderNames = {
+        'Guerrero': 'warrior',
+        'Clérigo': 'priest',
+        'Mago': 'mage',
+        'Cazador': 'hunter',
+        'Pícaro': 'rogue'
+    };
+
+    const CombinationSuffixes = {
+        'warrior': 'War',
+        'priest': 'Priest',
+        'mage': 'Mage',
+        'hunter': 'Hunter',
+        'rogue': 'Rogue'
+    };
+
+    const raceName = character.race_name ? character.race_name.trim() : '';
+    const className = character.class_name ? character.class_name.trim() : '';
+    const folderName = ClassFolderNames[className];
+    const suffix = folderName ? CombinationSuffixes[folderName] : null;
+
+    if (raceName && suffix) {
+        // Asumimos que dashboard siempre está en /views/ o root, ajustamos path
+        const basePath = window.location.pathname.includes('/views/') ? '../' : '';
+        const imagePath = `${basePath}assets/images/Combinaciones/${raceName}/${raceName}${suffix}.png`;
+
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.alt = `${raceName} ${className}`;
+        img.className = 'card-character-image';
+        img.onerror = function () {
+            this.style.display = 'none';
+            icon.textContent = RaceIcons[raceName] || '🎭';
+        };
+        icon.appendChild(img);
+    } else {
+        icon.textContent = RaceIcons[raceName] || '🎭';
+    }
 
     const name = document.createElement('h3');
     name.className = 'character-name';
