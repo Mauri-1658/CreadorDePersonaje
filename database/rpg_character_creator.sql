@@ -3,11 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2025 a las 18:56:14
+-- Tiempo de generación: 09-12-2025 a las 20:41:17
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
-CREATE DATABASE IF NOT EXISTS `rpg_character_creator` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `rpg_character_creator`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -121,7 +119,8 @@ INSERT INTO `characters` (`id`, `user_id`, `name`, `race_id`, `class_id`, `subcl
 (1, 1, 'asd', 3, 1, 2, 1, '2025-12-09 16:13:52', '2025-12-09 16:13:52', 0),
 (2, 1, 'Tixiords', 2, 5, 15, 1, '2025-12-09 16:17:37', '2025-12-09 17:47:55', 1),
 (3, 1, 'tyutyu', 2, 1, 3, 1, '2025-12-09 17:00:47', '2025-12-09 17:47:55', 0),
-(4, 2, 'erte', 3, 1, 2, 1, '2025-12-09 17:19:02', '2025-12-09 17:19:02', 0);
+(4, 2, 'erte', 3, 1, 2, 60, '2025-12-09 17:19:02', '2025-12-09 18:04:29', 1),
+(5, 2, 'Tixiords', 2, 2, 6, 58, '2025-12-09 18:06:12', '2025-12-09 18:06:12', 0);
 
 -- --------------------------------------------------------
 
@@ -216,20 +215,18 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_admin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `created_at`) VALUES
-(1, 'Mauri', 'mauri@gmail.com', '$2y$10$C.e3qh20IsRtZn7Am8FpXuYoaYw13G0PF6spCKJ4f7HThxLmkS6Eq', '2025-12-09 16:01:19'),
-(2, 'manuel', 'manuel@gmail.com', '$2y$10$y3kDJMHbp8yiS4d8kgS4EuHsDtGv4zdhcX9fy6OjDVfUjKIrVfntO', '2025-12-09 17:05:21'),
-(3, 'test', 'test@test.com', '$2y$10$A2Na8iVilbCWiw3uSu3s8OxYfWtkX7l1qJP7BHBI7bRnh1xreMIIy', '2025-12-09 17:07:52'),
-(4, 'test2', 'test2@test.com', '$2y$10$7hilnnxzRukAyzOGKKkEx.o3SVVEknd9ipsbxOVruAD1Xo03DR7ia', '2025-12-09 17:08:40'),
-(5, 'test3', 'test3@test.com', '$2y$10$unEVgWirVGxL9qgEfeuYhuP/MtJYrCHT3PzTxEDXkyObBX7QG/V.O', '2025-12-09 17:30:03'),
-(6, 'test4', 'test4@test.com', '$2y$10$1aLFQP8bZVC4NL6dK1vr1.CxXmIrW9b7J5UNmIw1iVHafV6/AtOyS', '2025-12-09 17:30:52');
+INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `created_at`, `is_admin`) VALUES
+(1, 'Mauri', 'mauri@gmail.com', '$2y$10$C.e3qh20IsRtZn7Am8FpXuYoaYw13G0PF6spCKJ4f7HThxLmkS6Eq', '2025-12-09 16:01:19', 1),
+(2, 'manuel', 'manuel@gmail.com', '$2y$10$y3kDJMHbp8yiS4d8kgS4EuHsDtGv4zdhcX9fy6OjDVfUjKIrVfntO', '2025-12-09 17:05:21', 0),
+(7, 'claudia', 'claudia@gmail.com', '$2y$10$Cbt7BAXc.0cBhyVGEBnd/.dSaoahTKkYZxIp7vCe5tJrA2wMUQs1u', '2025-12-09 19:36:36', 0);
 
 --
 -- Índices para tablas volcadas
@@ -297,7 +294,7 @@ ALTER TABLE `abilities`
 -- AUTO_INCREMENT de la tabla `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `classes`
@@ -321,7 +318,7 @@ ALTER TABLE `subclasses`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
