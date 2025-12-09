@@ -234,4 +234,26 @@ class Auth {
             return null;
         }
     }
+
+    /**
+     * Verifica si el usuario actual es administrador
+     * @return bool
+     */
+    public function isAdmin() {
+        if (!$this->isAuthenticated()) {
+            return false;
+        }
+
+        try {
+            $userId = $this->getUserId();
+            $stmt = $this->db->prepare("SELECT is_admin FROM users WHERE id = ?");
+            $stmt->execute([$userId]);
+            $user = $stmt->fetch();
+
+            return $user && $user['is_admin'] == 1;
+        } catch (PDOException $e) {
+            error_log("Error al verificar admin: " . $e->getMessage());
+            return false;
+        }
+    }
 }
