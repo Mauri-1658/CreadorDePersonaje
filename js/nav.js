@@ -3,7 +3,10 @@
  * Gestiona partículas, sesión de usuario y navegación básica
  */
 
-const API_BASE = 'api/endpoints';
+// Detectar si estamos en un subdirectorio (ej. /views/)
+const isInViews = window.location.pathname.includes('/views/');
+const ROOT_PATH = isInViews ? '../' : '';
+const API_BASE = isInViews ? '../api/endpoints' : 'api/endpoints';
 
 // === FUNCIONES AUXILIARES ===
 
@@ -137,7 +140,7 @@ async function handleLogout() {
             localStorage.removeItem('username');
             showToast('Sesión cerrada correctamente', 'success');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = `${ROOT_PATH}index.html`;
             }, 500);
         } else {
             showToast('Error al cerrar sesión', 'error');
@@ -156,7 +159,9 @@ async function handleLogout() {
 function requireAuth() {
     checkUserSession().then(isAuthenticated => {
         if (!isAuthenticated) {
-            window.location.href = 'login.html';
+            // Si no estamos en views, la ruta es views/login.html
+            const loginPath = isInViews ? 'login.html' : 'views/login.html';
+            window.location.href = loginPath;
         }
     });
 }

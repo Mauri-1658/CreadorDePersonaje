@@ -1,3 +1,5 @@
 [09-Dec-2025 19:17:14 Europe/Berlin] Error al verificar admin: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'is_admin' in 'field list'
 [09-Dec-2025 19:18:11 Europe/Berlin] [LOGOUT] Instanciando Auth y llamando logout()
 [09-Dec-2025 19:18:11 Europe/Berlin] [LOGOUT] Resultado: {"success":true,"message":"Sesi\u00f3n cerrada correctamente"}
+[09-Dec-2025 20:27:13 Europe/Berlin] [LOGOUT] Instanciando Auth y llamando logout()
+[09-Dec-2025 20:27:13 Europe/Berlin] [LOGOUT] Resultado: {"success":true,"message":"Sesi\u00f3n cerrada correctamente"}

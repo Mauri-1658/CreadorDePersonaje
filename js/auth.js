@@ -10,15 +10,15 @@ const AuthDOM = {
     registerForm: document.getElementById('registerForm'),
     formLogin: document.getElementById('formLogin'),
     formRegister: document.getElementById('formRegister'),
-    
+
     // Botones de toggle
     showRegister: document.getElementById('showRegister'),
     showLogin: document.getElementById('showLogin'),
-    
+
     // Inputs de login
     loginEmail: document.getElementById('loginEmail'),
     loginPassword: document.getElementById('loginPassword'),
-    
+
     // Inputs de registro
     registerUsername: document.getElementById('registerUsername'),
     registerEmail: document.getElementById('registerEmail'),
@@ -29,10 +29,10 @@ const AuthDOM = {
 const ValidationRegex = {
     // Email: formato válido de email
     email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    
+
     // Contraseña: mínimo 6 caracteres
     password: /^.{6,}$/,
-    
+
     // Username: alfanumérico, 3-20 caracteres
     username: /^[a-zA-Z0-9_]{3,20}$/
 };
@@ -75,30 +75,30 @@ function validateUsername(username) {
 async function handleRegister(event) {
     // Prevenir envío por defecto del formulario
     event.preventDefault();
-    
+
     const username = AuthDOM.registerUsername.value.trim();
     const email = AuthDOM.registerEmail.value.trim();
     const password = AuthDOM.registerPassword.value;
-    
+
     // Validar campos con RegExp
     if (!validateUsername(username)) {
         showToast('El nombre de usuario debe tener entre 3 y 20 caracteres alfanuméricos', 'error');
         return;
     }
-    
+
     if (!validateEmail(email)) {
         showToast('El email no tiene un formato válido', 'error');
         return;
     }
-    
+
     if (!validatePassword(password)) {
         showToast('La contraseña debe tener al menos 6 caracteres', 'error');
         return;
     }
-    
+
     try {
         showLoading(true);
-        
+
         // Enviar datos a la API
         const response = await fetch(`${API_BASE}/register.php`, {
             method: 'POST',
@@ -111,18 +111,18 @@ async function handleRegister(event) {
                 password: password
             })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showToast('✅ Usuario registrado correctamente. Ahora puedes iniciar sesión', 'success');
-            
+
             // Limpiar formulario
             AuthDOM.formRegister.reset();
-            
+
             // Cambiar a formulario de login
             toggleAuthForms('login');
-            
+
             // Pre-llenar email en login
             AuthDOM.loginEmail.value = email;
         } else {
@@ -143,24 +143,24 @@ async function handleRegister(event) {
 async function handleLogin(event) {
     // Prevenir envío por defecto del formulario
     event.preventDefault();
-    
+
     const email = AuthDOM.loginEmail.value.trim();
     const password = AuthDOM.loginPassword.value;
-    
+
     // Validar campos con RegExp
     if (!validateEmail(email)) {
         showToast('El email no tiene un formato válido', 'error');
         return;
     }
-    
+
     if (!password) {
         showToast('La contraseña es requerida', 'error');
         return;
     }
-    
+
     try {
         showLoading(true);
-        
+
         // Enviar datos a la API
         const response = await fetch(`${API_BASE}/login.php`, {
             method: 'POST',
@@ -173,19 +173,21 @@ async function handleLogin(event) {
                 password: password
             })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showToast(`✅ Bienvenido, ${data.user.username}!`, 'success');
-            
+
             // Limpiar formulario
             AuthDOM.formLogin.reset();
-            
-            // Llamar a función de app.js para manejar login exitoso
-            if (typeof handleLoginSuccess === 'function') {
-                handleLoginSuccess(data.user);
-            }
+
+            // Redirigir al dashboard
+            setTimeout(() => {
+                // Si estamos en views, el dashboard es sibling. Si no, views/dashboard.html
+                const dashboardPath = window.location.pathname.includes('/views/') ? 'dashboard.html' : 'views/dashboard.html';
+                window.location.href = dashboardPath;
+            }, 1000);
         } else {
             showToast(data.message || 'Credenciales incorrectas', 'error');
         }
