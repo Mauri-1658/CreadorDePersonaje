@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Crear Personaje - Creador de Personajes RPG" />
+    <title>Crear Personaje - Creador de Personajes RPG</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Philosopher:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+
+<body>
+    <!-- Contenedor de Partículas -->
+    <div id="particles"></div>
+
+    <!-- Navegación -->
+    <nav id="mainNav">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">
+                <span class="nav-icon">⚔️</span>
+                <h1>Creador RPG</h1>
+            </a>
+            <div class="nav-menu">
+                <a href="../index.html" class="nav-link">
+                    <span>🏰</span> Inicio
+                </a>
+                <a href="dashboard.html" class="nav-link">
+                    <span>📜</span> Mis Personajes
+                </a>
+                <a href="creator.html" class="nav-link active">
+                    <span>⚔️</span> Crear Personaje
+                </a>
+                <div class="nav-user">
+                    <a href="profile.html" id="navUsername" class="btn-username">Usuario</a>
+                    <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Vista de Creador de Personajes -->
+    <main id="mainSection" class="main-section">
+        <section id="creatorView" class="view-container">
+            <div class="section-header">
+                <a href="dashboard.html" class="btn-back">← Volver</a>
+                <h2 class="section-title glow-title" id="creatorTitle">Crear Nuevo Personaje</h2>
+            </div>
+
+            <form id="formCharacter" class="character-form">
+                <!-- Nombre del Personaje -->
+                <div class="form-section">
+                    <label for="characterName" class="section-label">Nombre del Personaje</label>
+                    <input type="text" id="characterName" name="name" required placeholder="Ej: Aragorn"
+                        class="input-large" />
+                </div>
+
+                <!-- Nivel del Personaje -->
+                <div class="form-section">
+                    <label for="characterLevel" class="section-label">Nivel</label>
+                    <input type="number" id="characterLevel" name="level" min="1" max="60" value="1"
+                        class="input-level" />
+                </div>
+
+                <!-- Selección de Raza -->
+                <div class="form-section">
+                    <label class="section-label">Selecciona tu Raza</label>
+                    <div id="racesList" class="selection-grid">
+                        <!-- Las razas se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
+
+                <!-- Selección de Clase -->
+                <div class="form-section">
+                    <label class="section-label">Selecciona tu Clase</label>
+                    <div id="classesList" class="selection-grid">
+                        <!-- Las clases se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
+
+                <!-- Selección de Subclase -->
+                <div id="subclassSection" class="form-section hidden">
+                    <label class="section-label">Especialización (Subclase)</label>
+                    <div id="subclassesList" class="selection-grid">
+                        <!-- Las subclases se cargarán dinámicamente aquí -->
+                    </div>
+                </div>
+
+                <!-- Visualización de Habilidades -->
+                <div id="abilitiesSection" class="form-section hidden">
+                    <label class="section-label">Habilidades</label>
+                    <div id="abilitiesContainer">
+                        <div id="generalAbilities" class="abilities-group">
+                            <h4 class="abilities-subtitle">Habilidades Generales</h4>
+                            <div id="generalAbilitiesList" class="abilities-list"></div>
+                        </div>
+                        <div id="subclassAbilities" class="abilities-group">
+                            <h4 class="abilities-subtitle">Habilidades de Especialización</h4>
+                            <div id="subclassAbilitiesList" class="abilities-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="form-actions">
+                    <a href="dashboard.html" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" id="btnSubmitCharacter" class="btn btn-primary">
+                        Crear Personaje
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Creador de Personajes RPG</p>
+        <a href="credits.html" class="footer-link">Créditos y Atribuciones</a>
+    </footer>
+
+    <!-- Notificaciones Toast -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/nav.js"></script>
+    <script src="../js/creator-page.js"></script>
+</body>
+
+</html>

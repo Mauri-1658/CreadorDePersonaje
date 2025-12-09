@@ -7,7 +7,7 @@
 const AppState = {
   currentUser: null,
   isAuthenticated: false,
-  currentView: "auth",
+  currentView: "hero",
   characters: [],
   editingCharacterId: null,
 };
@@ -18,6 +18,7 @@ const API_BASE = "api/endpoints";
 // === ELEMENTOS DEL DOM ===
 const DOM = {
   // Secciones principales
+  heroSection: document.getElementById("heroSection"),
   authSection: document.getElementById("authSection"),
   mainSection: document.getElementById("mainSection"),
   mainNav: document.getElementById("mainNav"),
@@ -26,20 +27,22 @@ const DOM = {
   dashboardView: document.getElementById("dashboardView"),
   creatorView: document.getElementById("creatorView"),
   profileView: document.getElementById("profileView"),
-  adminView: document.getElementById("adminView"),
 
   // Navegación
   navBrand: document.getElementById("navBrand"),
   navUsername: document.getElementById("navUsername"),
+  btnShowHome: document.getElementById("btnShowHome"),
   btnShowDashboard: document.getElementById("btnShowDashboard"),
-  btnShowAdmin: document.getElementById("btnShowAdmin"),
+  btnShowCreator: document.getElementById("btnShowCreator"),
   btnLogin: document.getElementById("btnLogin"),
   btnLogout: document.getElementById("btnLogout"),
+
+  // Hero
+  btnHeroStart: document.getElementById("btnHeroStart"),
 
   // Dashboard
   charactersList: document.getElementById("charactersList"),
   emptyState: document.getElementById("emptyState"),
-  btnCreateNew: document.getElementById("btnCreateNew"),
   btnCreateFirst: document.getElementById("btnCreateFirst"),
 
   // Creator
@@ -92,25 +95,30 @@ function showLoading(show) {
 
 /**
  * Cambia entre vistas de la aplicación
- * @param {string} view - 'auth', 'dashboard', 'creator', 'profile'
+ * @param {string} view - 'hero', 'auth', 'dashboard', 'creator', 'profile'
  */
 function switchView(view) {
   console.log(`Cambiando a vista: ${view}`);
 
   // Ocultar todas las secciones
+  DOM.heroSection.classList.add("hidden");
   DOM.authSection.classList.add("hidden");
   DOM.mainSection.classList.add("hidden");
   DOM.dashboardView.classList.add("hidden");
   DOM.creatorView.classList.add("hidden");
   DOM.profileView.classList.add("hidden");
-  DOM.adminView.classList.add("hidden");
 
   // Mostrar la vista solicitada
   switch (view) {
+    case "hero":
+      DOM.heroSection.classList.remove("hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      break;
+
     case "auth":
       DOM.authSection.classList.remove("hidden");
       DOM.mainNav.classList.remove("nav-hidden");
-      DOM.btnLogin.classList.add("hidden");
+      DOM.btnLogin.classList.add("hidden"); // Ocultar botón porque ya estamos en login
       break;
 
     case "dashboard":
@@ -134,15 +142,6 @@ function switchView(view) {
         loadProfile();
       }
       break;
-
-    case "admin":
-      DOM.mainSection.classList.remove("hidden");
-      DOM.adminView.classList.remove("hidden");
-      DOM.mainNav.classList.remove("nav-hidden");
-      if (typeof loadAdminDashboard === "function") {
-        loadAdminDashboard();
-      }
-      break;
   }
 
   AppState.currentView = view;
@@ -151,7 +150,7 @@ function switchView(view) {
 /**
  * Actualiza la información del usuario en la navegación
  */
-function updateUserInfo(isAuthenticated = false, isAdmin = false) {
+function updateUserInfo(isAuthenticated = false) {
   if (isAuthenticated) {
     const username = localStorage.getItem("username");
     if (username) {
@@ -162,19 +161,13 @@ function updateUserInfo(isAuthenticated = false, isAdmin = false) {
     DOM.btnLogin.classList.add("hidden");
     DOM.btnLogout.classList.remove("hidden");
     DOM.btnShowDashboard.classList.remove("hidden");
-    
-    // Mostrar botón admin solo si es admin
-    if (isAdmin) {
-      DOM.btnShowAdmin.classList.remove("hidden");
-    } else {
-      DOM.btnShowAdmin.classList.add("hidden");
-    }
+    DOM.btnShowCreator.classList.remove("hidden");
   } else {
     DOM.navUsername.classList.add("hidden");
     DOM.btnLogin.classList.remove("hidden");
     DOM.btnLogout.classList.add("hidden");
     DOM.btnShowDashboard.classList.add("hidden");
-    DOM.btnShowAdmin.classList.add("hidden");
+    DOM.btnShowCreator.classList.add("hidden");
   }
 }
 
@@ -192,35 +185,18 @@ async function checkSession() {
 
     if (data.success) {
       AppState.isAuthenticated = true;
-      
-      // Verificar si es admin
-      let isAdmin = false;
-      if (typeof checkAdminStatus === "function") {
-        isAdmin = await checkAdminStatus();
-      }
-      
-      updateUserInfo(true, isAdmin);
+      updateUserInfo(true);
       switchView("dashboard");
     } else {
       AppState.isAuthenticated = false;
       updateUserInfo(false);
-      DOM.mainSection.classList.remove("hidden");
-      DOM.dashboardView.classList.remove("hidden");
-      DOM.mainNav.classList.remove("nav-hidden");
-      AppState.currentView = "dashboard";
-      DOM.charactersList.innerHTML = "";
-      DOM.emptyState.classList.remove("hidden");
+      switchView("hero");
     }
   } catch (error) {
     console.error("Error al verificar sesión:", error);
     AppState.isAuthenticated = false;
     updateUserInfo(false);
-    DOM.mainSection.classList.remove("hidden");
-    DOM.dashboardView.classList.remove("hidden");
-    DOM.mainNav.classList.remove("nav-hidden");
-    AppState.currentView = "dashboard";
-    DOM.charactersList.innerHTML = "";
-    DOM.emptyState.classList.remove("hidden");
+    switchView("hero");
   }
 }
 
@@ -312,30 +288,26 @@ function renderCharactersGrid(characters) {
 // === EVENT LISTENERS ===
 
 DOM.navBrand.addEventListener("click", () => {
-  switchView("dashboard");
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("hero");
+  }
+});
+
+DOM.btnShowHome.addEventListener("click", () => {
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("hero");
+  }
 });
 
 DOM.btnShowDashboard.addEventListener("click", () => {
   switchView("dashboard");
 });
 
-DOM.btnLogin.addEventListener("click", () => {
-  switchView("auth");
-});
-
-DOM.btnLogout.addEventListener("click", handleLogoutClick);
-
-// Nombre de usuario clickeable - lleva al perfil
-DOM.navUsername.addEventListener("click", () => {
-  switchView("profile");
-});
-
-// Botón de admin
-DOM.btnShowAdmin.addEventListener("click", () => {
-  switchView("admin");
-});
-
-DOM.btnCreateNew.addEventListener("click", () => {
+DOM.btnShowCreator.addEventListener("click", () => {
   if (!AppState.isAuthenticated) {
     showToast("Debes iniciar sesión para crear personajes", "warning");
     switchView("auth");
@@ -350,6 +322,26 @@ DOM.btnCreateNew.addEventListener("click", () => {
   }
 
   switchView("creator");
+});
+
+DOM.btnLogin.addEventListener("click", () => {
+  switchView("auth");
+});
+
+DOM.btnLogout.addEventListener("click", handleLogoutClick);
+
+// Nombre de usuario clickeable - lleva al perfil
+DOM.navUsername.addEventListener("click", () => {
+  switchView("profile");
+});
+
+// Botón Hero - Comenzar Aventura
+DOM.btnHeroStart.addEventListener("click", () => {
+  if (AppState.isAuthenticated) {
+    switchView("dashboard");
+  } else {
+    switchView("auth");
+  }
 });
 
 DOM.btnCreateFirst.addEventListener("click", () => {
