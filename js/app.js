@@ -26,11 +26,13 @@ const DOM = {
   dashboardView: document.getElementById("dashboardView"),
   creatorView: document.getElementById("creatorView"),
   profileView: document.getElementById("profileView"),
+  adminView: document.getElementById("adminView"),
 
   // Navegación
   navBrand: document.getElementById("navBrand"),
   navUsername: document.getElementById("navUsername"),
   btnShowDashboard: document.getElementById("btnShowDashboard"),
+  btnShowAdmin: document.getElementById("btnShowAdmin"),
   btnLogin: document.getElementById("btnLogin"),
   btnLogout: document.getElementById("btnLogout"),
 
@@ -101,13 +103,14 @@ function switchView(view) {
   DOM.dashboardView.classList.add("hidden");
   DOM.creatorView.classList.add("hidden");
   DOM.profileView.classList.add("hidden");
+  DOM.adminView.classList.add("hidden");
 
   // Mostrar la vista solicitada
   switch (view) {
     case "auth":
       DOM.authSection.classList.remove("hidden");
       DOM.mainNav.classList.remove("nav-hidden");
-      DOM.btnLogin.classList.add("hidden"); // Ocultar botón porque ya estamos en login
+      DOM.btnLogin.classList.add("hidden");
       break;
 
     case "dashboard":
@@ -131,6 +134,15 @@ function switchView(view) {
         loadProfile();
       }
       break;
+
+    case "admin":
+      DOM.mainSection.classList.remove("hidden");
+      DOM.adminView.classList.remove("hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      if (typeof loadAdminDashboard === "function") {
+        loadAdminDashboard();
+      }
+      break;
   }
 
   AppState.currentView = view;
@@ -139,7 +151,7 @@ function switchView(view) {
 /**
  * Actualiza la información del usuario en la navegación
  */
-function updateUserInfo(isAuthenticated = false) {
+function updateUserInfo(isAuthenticated = false, isAdmin = false) {
   if (isAuthenticated) {
     const username = localStorage.getItem("username");
     if (username) {
@@ -150,11 +162,19 @@ function updateUserInfo(isAuthenticated = false) {
     DOM.btnLogin.classList.add("hidden");
     DOM.btnLogout.classList.remove("hidden");
     DOM.btnShowDashboard.classList.remove("hidden");
+    
+    // Mostrar botón admin solo si es admin
+    if (isAdmin) {
+      DOM.btnShowAdmin.classList.remove("hidden");
+    } else {
+      DOM.btnShowAdmin.classList.add("hidden");
+    }
   } else {
     DOM.navUsername.classList.add("hidden");
     DOM.btnLogin.classList.remove("hidden");
     DOM.btnLogout.classList.add("hidden");
     DOM.btnShowDashboard.classList.add("hidden");
+    DOM.btnShowAdmin.classList.add("hidden");
   }
 }
 
@@ -172,7 +192,14 @@ async function checkSession() {
 
     if (data.success) {
       AppState.isAuthenticated = true;
-      updateUserInfo(true);
+      
+      // Verificar si es admin
+      let isAdmin = false;
+      if (typeof checkAdminStatus === "function") {
+        isAdmin = await checkAdminStatus();
+      }
+      
+      updateUserInfo(true, isAdmin);
       switchView("dashboard");
     } else {
       AppState.isAuthenticated = false;
@@ -301,6 +328,11 @@ DOM.btnLogout.addEventListener("click", handleLogoutClick);
 // Nombre de usuario clickeable - lleva al perfil
 DOM.navUsername.addEventListener("click", () => {
   switchView("profile");
+});
+
+// Botón de admin
+DOM.btnShowAdmin.addEventListener("click", () => {
+  switchView("admin");
 });
 
 DOM.btnCreateNew.addEventListener("click", () => {

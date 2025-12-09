@@ -32,6 +32,9 @@
           <button id="btnShowDashboard" class="nav-link hidden">
             <span>🏠</span> Mis Personajes
           </button>
+          <button id="btnShowAdmin" class="nav-link admin-link hidden">
+            <span>⚙️</span> Admin
+          </button>
           <div class="nav-user">
             <button id="navUsername" class="btn-username hidden">Usuario</button>
             <button id="btnLogin" class="btn-login hidden">Iniciar Sesión</button>
@@ -243,6 +246,54 @@
         </div>
       </section>
 
+      <!-- Vista de Admin Dashboard -->
+      <section id="adminView" class="view-container hidden">
+        <div class="section-header">
+          <h2 class="section-title">⚙️ Panel de Administración</h2>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="admin-stats">
+          <div class="stat-card">
+            <span class="stat-icon">👥</span>
+            <div class="stat-info">
+              <span id="statUsers" class="stat-number">0</span>
+              <span class="stat-label">Usuarios</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🎭</span>
+            <div class="stat-info">
+              <span id="statCharacters" class="stat-number">0</span>
+              <span class="stat-label">Personajes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Usuarios -->
+        <div class="admin-section">
+          <h3 class="admin-section-title">👥 Usuarios Registrados</h3>
+          <div id="adminUsersTable" class="admin-table-container">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Estadísticas Populares -->
+        <div class="admin-section">
+          <h3 class="admin-section-title">📊 Estadísticas</h3>
+          <div class="admin-stats-grid">
+            <div class="admin-stats-card">
+              <h4>⚔️ Clases Populares</h4>
+              <ul id="popularClasses" class="stats-list"></ul>
+            </div>
+            <div class="admin-stats-card">
+              <h4>🎭 Razas Populares</h4>
+              <ul id="popularRaces" class="stats-list"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Vista de Creador de Personajes -->
       <section id="creatorView" class="view-container hidden">
         <div class="section-header">
@@ -362,5 +413,6 @@
     <script src="js/characters.js?v=2"></script>
     <script src="js/creator.js?v=2"></script>
     <script src="js/profile.js?v=1"></script>
+    <script src="js/admin.js?v=1"></script>
   </body>
 </html>
