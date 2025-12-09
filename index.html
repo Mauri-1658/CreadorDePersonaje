@@ -24,24 +24,25 @@
     <!-- Navegación -->
     <nav id="mainNav" class="nav-hidden">
       <div class="nav-container">
-        <div class="nav-brand">
+        <button id="navBrand" class="nav-brand">
           <span class="nav-icon">⚔️</span>
           <h1>Creador RPG</h1>
-        </div>
+        </button>
         <div class="nav-menu">
-          <button id="btnShowDashboard" class="nav-link">
+          <button id="btnShowDashboard" class="nav-link hidden">
             <span>🏠</span> Mis Personajes
           </button>
           <div class="nav-user">
-            <span id="navUsername" class="username">Usuario</span>
-            <button id="btnLogout" class="btn-logout">Cerrar Sesión</button>
+            <button id="navUsername" class="btn-username hidden">Usuario</button>
+            <button id="btnLogin" class="btn-login hidden">Iniciar Sesión</button>
+            <button id="btnLogout" class="btn-logout hidden">Cerrar Sesión</button>
           </div>
         </div>
       </div>
     </nav>
 
     <!-- Sección Login/Registro -->
-    <section id="authSection" class="auth-section">
+    <section id="authSection" class="auth-section hidden">
       <div class="auth-container">
         <div class="auth-header">
           <h1 class="auth-title">⚔️ Creador de Personajes RPG ⚔️</h1>
@@ -158,6 +159,90 @@
         </div>
       </section>
 
+      <!-- Vista de Perfil de Usuario -->
+      <section id="profileView" class="view-container hidden">
+        <div class="section-header">
+          <h2 class="section-title">👤 Mi Perfil</h2>
+        </div>
+
+        <div class="profile-container">
+          <!-- Información del Usuario -->
+          <div class="profile-card">
+            <h3 class="profile-card-title">📋 Información de Usuario</h3>
+            <div class="profile-info">
+              <div class="info-row">
+                <span class="info-label">👤 Usuario:</span>
+                <span id="profileUsername" class="info-value">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">📧 Email:</span>
+                <span id="profileEmail" class="info-value">-</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">📅 Registrado:</span>
+                <span id="profileCreatedAt" class="info-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personaje Principal -->
+          <div class="profile-card">
+            <h3 class="profile-card-title">⭐ Personaje Principal</h3>
+            <div id="mainCharacterDisplay" class="main-character-container">
+              <div id="mainCharacterEmpty" class="empty-main">
+                <p class="empty-icon">🎭</p>
+                <p>No has seleccionado un personaje principal</p>
+                <p class="empty-hint">Marca uno como favorito desde "Mis Personajes"</p>
+              </div>
+              <div id="mainCharacterCard" class="main-character-card hidden">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Cambiar Contraseña -->
+          <div class="profile-card">
+            <h3 class="profile-card-title">🔒 Cambiar Contraseña</h3>
+            <form id="formChangePassword" class="password-form">
+              <div class="form-group">
+                <label for="currentPassword">Contraseña actual</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  name="current_password"
+                  required
+                  placeholder="Tu contraseña actual"
+                  autocomplete="current-password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="newPassword">Nueva contraseña</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="new_password"
+                  required
+                  placeholder="Mínimo 6 caracteres"
+                  autocomplete="new-password"
+                />
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirmar contraseña</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirm_password"
+                  required
+                  placeholder="Repite la nueva contraseña"
+                  autocomplete="new-password"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
       <!-- Vista de Creador de Personajes -->
       <section id="creatorView" class="view-container hidden">
         <div class="section-header">
@@ -178,6 +263,20 @@
               required
               placeholder="Ej: Aragorn"
               class="input-large"
+            />
+          </div>
+
+          <!-- Nivel del Personaje -->
+          <div class="form-section">
+            <label for="characterLevel" class="section-label">Nivel</label>
+            <input
+              type="number"
+              id="characterLevel"
+              name="level"
+              min="1"
+              max="60"
+              value="1"
+              class="input-level"
             />
           </div>
 
@@ -262,5 +361,6 @@
     <script src="js/auth.js?v=2"></script>
     <script src="js/characters.js?v=2"></script>
     <script src="js/creator.js?v=2"></script>
+    <script src="js/profile.js?v=1"></script>
   </body>
 </html>

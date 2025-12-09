@@ -7,6 +7,7 @@
 const CreatorDOM = {
     form: document.getElementById('formCharacter'),
     characterName: document.getElementById('characterName'),
+    characterLevel: document.getElementById('characterLevel'),
     
     // Listas de selección
     racesList: document.getElementById('racesList'),
@@ -54,6 +55,27 @@ const ClassFolderNames = {
     'Cazador': 'hunter',
     'Pícaro': 'rogue'
 };
+
+// === MAPEO DE NOMBRES DE LOGOS DE CLASES ===
+const ClassLogoNames = {
+    'warrior': 'logoWarrior.png',
+    'priest': 'logoPriest.png',
+    'mage': 'logoMago.png',
+    'hunter': 'logoHunter.png',
+    'rogue': 'logoRogue.png'
+};
+
+/**
+ * Normaliza un nombre removiendo tildes y caracteres especiales
+ * @param {string} str - String a normalizar
+ * @returns {string} - String normalizado
+ */
+function normalizeFileName(str) {
+    return str
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+}
 
 // === FUNCIONES DE CARGA DE DATOS ===
 
@@ -224,7 +246,8 @@ function renderClasses(classes) {
         const folderName = ClassFolderNames[cls.name];
         if (folderName) {
             const img = document.createElement('img');
-            const imagePath = `assets/images/classes/${folderName}/logo${folderName.charAt(0).toUpperCase() + folderName.slice(1)}.png`;
+            const logoFileName = ClassLogoNames[folderName];
+            const imagePath = `assets/images/classes/${folderName}/${logoFileName}`;
             img.src = imagePath;
             img.alt = cls.name;
             img.className = 'class-logo';
@@ -287,7 +310,7 @@ function renderSubclasses(subclasses) {
             icon.className = 'selection-icon';
             
             const img = document.createElement('img');
-            img.src = `assets/images/classes/${classFolderName}/${subcls.name}/${subcls.name.toLowerCase()}.png`;
+            img.src = `assets/images/classes/${classFolderName}/${normalizeFileName(subcls.name)}/${normalizeFileName(subcls.name)}.png`;
             img.alt = subcls.name;
             img.className = 'subclass-image';
             img.onerror = function() {
@@ -471,7 +494,7 @@ async function handleCharacterSubmit(event) {
         race_id: CreatorState.selectedRaceId,
         class_id: CreatorState.selectedClassId,
         subclass_id: CreatorState.selectedSubclassId,
-        level: 1
+        level: parseInt(CreatorDOM.characterLevel.value) || 1
     };
     
     if (isEditing) {
@@ -567,6 +590,7 @@ async function updateCharacter(characterData) {
 function resetCreatorForm() {
     // Limpiar formulario
     CreatorDOM.form.reset();
+    CreatorDOM.characterLevel.value = 1;
     
     // Resetear estado
     CreatorState.selectedRaceId = null;
@@ -592,8 +616,9 @@ function resetCreatorForm() {
  * @param {Object} character - Datos del personaje
  */
 function populateCreatorForm(character) {
-    // Llenar nombre
+    // Llenar nombre y nivel
     CreatorDOM.characterName.value = character.name;
+    CreatorDOM.characterLevel.value = character.level || 1;
     
     // Seleccionar raza
     CreatorState.selectedRaceId = character.race_id;

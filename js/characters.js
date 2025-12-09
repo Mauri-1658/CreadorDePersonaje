@@ -57,6 +57,16 @@ function createCharacterCard(character) {
     card.className = 'character-card';
     card.dataset.characterId = character.id;
     
+    // Botón de estrella para marcar como main
+    const btnStar = document.createElement('button');
+    btnStar.className = `btn-star ${character.is_main ? 'active' : ''}`;
+    btnStar.textContent = character.is_main ? '⭐' : '☆';
+    btnStar.title = character.is_main ? 'Personaje principal' : 'Marcar como principal';
+    btnStar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleToggleMain(character.id, !character.is_main);
+    });
+    
     // Header con icono y nombre
     const header = document.createElement('div');
     header.className = 'character-header';
@@ -124,6 +134,7 @@ function createCharacterCard(character) {
     actions.appendChild(btnDelete);
     
     // Ensamblar tarjeta
+    card.appendChild(btnStar);
     card.appendChild(header);
     card.appendChild(info);
     card.appendChild(actions);
@@ -219,6 +230,43 @@ async function handleDeleteCharacter(characterId, characterName) {
         showToast('Error de conexión', 'error');
     } finally {
         showLoading(false);
+    }
+}
+
+/**
+ * Maneja el toggle de personaje principal
+ * @param {number} characterId - ID del personaje
+ * @param {boolean} setAsMain - Si establecer como main
+ */
+async function handleToggleMain(characterId, setAsMain) {
+    try {
+        const response = await fetch(`${API_BASE}/set-main.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                character_id: characterId,
+                is_main: setAsMain
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showToast(setAsMain ? '⭐ Personaje establecido como principal' : 'Personaje principal eliminado', 'success');
+            
+            // Recargar lista de personajes
+            if (typeof loadCharactersForDashboard === 'function') {
+                loadCharactersForDashboard();
+            }
+        } else {
+            showToast(data.message || 'Error al establecer personaje principal', 'error');
+        }
+    } catch (error) {
+        console.error('Error al establecer personaje principal:', error);
+        showToast('Error de conexión', 'error');
     }
 }
 

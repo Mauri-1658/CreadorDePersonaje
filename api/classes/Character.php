@@ -23,6 +23,7 @@ class Character {
                     c.id,
                     c.name,
                     c.level,
+                    c.is_main,
                     c.created_at,
                     r.name as race_name,
                     r.image_path as race_image,

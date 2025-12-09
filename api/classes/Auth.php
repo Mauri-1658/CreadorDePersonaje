@@ -173,4 +173,65 @@ class Auth {
             'email' => $_SESSION['email']
         ];
     }
+
+    /**
+     * Cambia la contraseña del usuario
+     * @param int $userId - ID del usuario
+     * @param string $currentPassword - Contraseña actual
+     * @param string $newPassword - Nueva contraseña
+     * @return array
+     */
+    public function changePassword($userId, $currentPassword, $newPassword) {
+        try {
+            // Obtener contraseña actual del usuario
+            $stmt = $this->db->prepare("SELECT password_hash FROM users WHERE id = ?");
+            $stmt->execute([$userId]);
+            $user = $stmt->fetch();
+
+            if (!$user) {
+                return ['success' => false, 'message' => 'Usuario no encontrado'];
+            }
+
+            // Verificar contraseña actual
+            if (!password_verify($currentPassword, $user['password_hash'])) {
+                return ['success' => false, 'message' => 'Contraseña actual incorrecta'];
+            }
+
+            // Validar longitud de nueva contraseña
+            if (strlen($newPassword) < 6) {
+                return ['success' => false, 'message' => 'La nueva contraseña debe tener al menos 6 caracteres'];
+            }
+
+            // Hash de la nueva contraseña
+            $newPasswordHash = password_hash($newPassword, PASSWORD_BCRYPT);
+
+            // Actualizar contraseña
+            $stmt = $this->db->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+            $stmt->execute([$newPasswordHash, $userId]);
+
+            return ['success' => true, 'message' => 'Contraseña actualizada correctamente'];
+
+        } catch (PDOException $e) {
+            error_log("Error al cambiar contraseña: " . $e->getMessage());
+            return ['success' => false, 'message' => 'Error al cambiar contraseña'];
+        }
+    }
+
+    /**
+     * Obtiene los datos completos del usuario incluyendo fecha de registro
+     * @param int $userId - ID del usuario
+     * @return array|null
+     */
+    public function getFullUserData($userId) {
+        try {
+            $stmt = $this->db->prepare(
+                "SELECT id, username, email, created_at FROM users WHERE id = ?"
+            );
+            $stmt->execute([$userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener datos de usuario: " . $e->getMessage());
+            return null;
+        }
+    }
 }

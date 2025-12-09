@@ -22,6 +22,8 @@ Aplicación web completa para crear y gestionar personajes de juegos de rol (RPG
 - ✅ API REST completa con endpoints CRUD
 - ✅ Conexión a base de datos mediante PDO
 - ✅ Validación de datos y seguridad
+- ✅ Cambio de contraseña con verificación de contraseña actual
+- ✅ Sistema de personaje principal/favorito
 
 ### Frontend (JavaScript + HTML + CSS)
 
@@ -31,6 +33,8 @@ Aplicación web completa para crear y gestionar personajes de juegos de rol (RPG
 - ✅ Validación de formularios con expresiones regulares
 - ✅ Almacenamiento local (localStorage)
 - ✅ Efectos CSS (hover, transiciones, animaciones)
+- ✅ Perfil de usuario con información y cambio de contraseña
+- ✅ Selector de nivel de personaje (1-60)
 
 ### Sistema de Juego
 
@@ -38,6 +42,7 @@ Aplicación web completa para crear y gestionar personajes de juegos de rol (RPG
 - ⚔️ 5 Clases con roles definidos (Tank, Healer, DPS)
 - 🎯 15 Subclases (3 por clase)
 - ✨ Sistema de habilidades (4 generales + 2 por subclase)
+- ⭐ Sistema de personaje principal/favorito
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -128,6 +133,8 @@ CreadorDePersonaje/
 │       ├── register.php            # POST - Registro
 │       ├── login.php               # POST - Login
 │       ├── logout.php              # POST - Logout
+│       ├── profile.php             # GET, PUT - Perfil y cambio contraseña
+│       ├── set-main.php            # POST - Establecer personaje principal
 │       ├── characters.php          # GET, POST, PUT, DELETE
 │       ├── races.php               # GET - Razas
 │       ├── classes.php             # GET - Clases
@@ -146,7 +153,8 @@ CreadorDePersonaje/
 │   ├── app.js                      # Lógica principal y estado
 │   ├── auth.js                     # Autenticación y validación
 │   ├── characters.js               # Gestión de personajes
-│   └── creator.js                  # Creador de personajes
+│   ├── creator.js                  # Creador de personajes
+│   └── profile.js                  # Perfil de usuario
 ├── index.html                      # Página principal
 ├── credits.html                    # Créditos y atribuciones
 └── README.md                       # Este archivo
@@ -431,14 +439,23 @@ Content-Type: application/json
 3. **Crear Personaje:**
 
    - Click en "Crear Personaje"
+   - Escribe el nombre y selecciona el nivel (1-60)
    - Selecciona raza, clase y subclase
    - Visualiza las habilidades automáticamente
    - Guarda tu personaje
 
 4. **Gestionar Personajes:**
+
    - Ver lista en el dashboard
    - Editar personajes existentes
    - Eliminar personajes (con confirmación)
+   - Marcar personaje como favorito (⭐)
+
+5. **Mi Perfil:**
+   - Haz clic en tu nombre de usuario en el header
+   - Ver información de cuenta (email, fecha de registro)
+   - Ver tu personaje principal destacado
+   - Cambiar contraseña
 
 ## 🧪 Pruebas
 

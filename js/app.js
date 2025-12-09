@@ -25,10 +25,13 @@ const DOM = {
   // Vistas
   dashboardView: document.getElementById("dashboardView"),
   creatorView: document.getElementById("creatorView"),
+  profileView: document.getElementById("profileView"),
 
   // Navegación
+  navBrand: document.getElementById("navBrand"),
   navUsername: document.getElementById("navUsername"),
   btnShowDashboard: document.getElementById("btnShowDashboard"),
+  btnLogin: document.getElementById("btnLogin"),
   btnLogout: document.getElementById("btnLogout"),
 
   // Dashboard
@@ -87,7 +90,7 @@ function showLoading(show) {
 
 /**
  * Cambia entre vistas de la aplicación
- * @param {string} view - 'auth', 'dashboard', 'creator'
+ * @param {string} view - 'auth', 'dashboard', 'creator', 'profile'
  */
 function switchView(view) {
   console.log(`Cambiando a vista: ${view}`);
@@ -97,12 +100,14 @@ function switchView(view) {
   DOM.mainSection.classList.add("hidden");
   DOM.dashboardView.classList.add("hidden");
   DOM.creatorView.classList.add("hidden");
+  DOM.profileView.classList.add("hidden");
 
   // Mostrar la vista solicitada
   switch (view) {
     case "auth":
       DOM.authSection.classList.remove("hidden");
-      DOM.mainNav.classList.add("nav-hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      DOM.btnLogin.classList.add("hidden"); // Ocultar botón porque ya estamos en login
       break;
 
     case "dashboard":
@@ -117,6 +122,15 @@ function switchView(view) {
       DOM.creatorView.classList.remove("hidden");
       DOM.mainNav.classList.remove("nav-hidden");
       break;
+
+    case "profile":
+      DOM.mainSection.classList.remove("hidden");
+      DOM.profileView.classList.remove("hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      if (typeof loadProfile === "function") {
+        loadProfile();
+      }
+      break;
   }
 
   AppState.currentView = view;
@@ -125,12 +139,22 @@ function switchView(view) {
 /**
  * Actualiza la información del usuario en la navegación
  */
-function updateUserInfo() {
-  // Intentar obtener username de localStorage
-  const username = localStorage.getItem("username");
-  if (username) {
-    DOM.navUsername.textContent = username;
-    AppState.currentUser = username;
+function updateUserInfo(isAuthenticated = false) {
+  if (isAuthenticated) {
+    const username = localStorage.getItem("username");
+    if (username) {
+      DOM.navUsername.textContent = username;
+      DOM.navUsername.classList.remove("hidden");
+      AppState.currentUser = username;
+    }
+    DOM.btnLogin.classList.add("hidden");
+    DOM.btnLogout.classList.remove("hidden");
+    DOM.btnShowDashboard.classList.remove("hidden");
+  } else {
+    DOM.navUsername.classList.add("hidden");
+    DOM.btnLogin.classList.remove("hidden");
+    DOM.btnLogout.classList.add("hidden");
+    DOM.btnShowDashboard.classList.add("hidden");
   }
 }
 
@@ -139,7 +163,6 @@ function updateUserInfo() {
  */
 async function checkSession() {
   try {
-    // Intentar obtener personajes (requiere autenticación)
     const response = await fetch(`${API_BASE}/characters.php`, {
       method: "GET",
       credentials: "include",
@@ -148,17 +171,29 @@ async function checkSession() {
     const data = await response.json();
 
     if (data.success) {
-      // Usuario autenticado
       AppState.isAuthenticated = true;
-      updateUserInfo();
+      updateUserInfo(true);
       switchView("dashboard");
     } else {
-      // No autenticado
-      switchView("auth");
+      AppState.isAuthenticated = false;
+      updateUserInfo(false);
+      DOM.mainSection.classList.remove("hidden");
+      DOM.dashboardView.classList.remove("hidden");
+      DOM.mainNav.classList.remove("nav-hidden");
+      AppState.currentView = "dashboard";
+      DOM.charactersList.innerHTML = "";
+      DOM.emptyState.classList.remove("hidden");
     }
   } catch (error) {
     console.error("Error al verificar sesión:", error);
-    switchView("auth");
+    AppState.isAuthenticated = false;
+    updateUserInfo(false);
+    DOM.mainSection.classList.remove("hidden");
+    DOM.dashboardView.classList.remove("hidden");
+    DOM.mainNav.classList.remove("nav-hidden");
+    AppState.currentView = "dashboard";
+    DOM.charactersList.innerHTML = "";
+    DOM.emptyState.classList.remove("hidden");
   }
 }
 
@@ -169,11 +204,8 @@ async function checkSession() {
 function handleLoginSuccess(userData) {
   AppState.isAuthenticated = true;
   AppState.currentUser = userData.username;
-
-  // Guardar username en localStorage (datos no sensibles)
   localStorage.setItem("username", userData.username);
-
-  updateUserInfo();
+  updateUserInfo(true);
   switchView("dashboard");
 }
 
@@ -181,9 +213,7 @@ function handleLoginSuccess(userData) {
  * Maneja el cierre de sesión
  */
 async function handleLogoutClick() {
-  if (!confirm("¿Estás seguro de que quieres cerrar sesión?")) {
-    return;
-  }
+  console.log('[LOGOUT] Iniciando logout');
 
   try {
     showLoading(true);
@@ -196,21 +226,18 @@ async function handleLogoutClick() {
     const data = await response.json();
 
     if (data.success) {
-      // Limpiar estado
       AppState.isAuthenticated = false;
       AppState.currentUser = null;
       AppState.characters = [];
-
-      // Limpiar localStorage
       localStorage.removeItem("username");
-
       showToast("Sesión cerrada correctamente", "success");
+      updateUserInfo(false);
       switchView("auth");
     } else {
       showToast("Error al cerrar sesión", "error");
     }
   } catch (error) {
-    console.error("Error en logout:", error);
+    console.error("[LOGOUT] Error:", error);
     showToast("Error de conexión", "error");
   } finally {
     showLoading(false);
@@ -250,8 +277,6 @@ async function loadCharactersForDashboard() {
  * @param {Array} characters - Array de personajes
  */
 function renderCharactersGrid(characters) {
-  // Esta función se implementa en characters.js
-  // Se llama aquí para mantener la separación de responsabilidades
   if (typeof renderCharacters === "function") {
     renderCharacters(characters);
   }
@@ -259,15 +284,32 @@ function renderCharactersGrid(characters) {
 
 // === EVENT LISTENERS ===
 
-// Navegación
+DOM.navBrand.addEventListener("click", () => {
+  switchView("dashboard");
+});
+
 DOM.btnShowDashboard.addEventListener("click", () => {
   switchView("dashboard");
 });
 
+DOM.btnLogin.addEventListener("click", () => {
+  switchView("auth");
+});
+
 DOM.btnLogout.addEventListener("click", handleLogoutClick);
 
-// Botones para crear personaje desde dashboard
+// Nombre de usuario clickeable - lleva al perfil
+DOM.navUsername.addEventListener("click", () => {
+  switchView("profile");
+});
+
 DOM.btnCreateNew.addEventListener("click", () => {
+  if (!AppState.isAuthenticated) {
+    showToast("Debes iniciar sesión para crear personajes", "warning");
+    switchView("auth");
+    return;
+  }
+
   AppState.editingCharacterId = null;
   DOM.creatorTitle.textContent = "Crear Nuevo Personaje";
 
@@ -279,6 +321,12 @@ DOM.btnCreateNew.addEventListener("click", () => {
 });
 
 DOM.btnCreateFirst.addEventListener("click", () => {
+  if (!AppState.isAuthenticated) {
+    showToast("Debes iniciar sesión para crear personajes", "warning");
+    switchView("auth");
+    return;
+  }
+
   AppState.editingCharacterId = null;
   DOM.creatorTitle.textContent = "Crear Nuevo Personaje";
 
@@ -289,7 +337,6 @@ DOM.btnCreateFirst.addEventListener("click", () => {
   switchView("creator");
 });
 
-// Botones de cancelar/volver desde creator
 DOM.btnBackToDashboard.addEventListener("click", () => {
   switchView("dashboard");
 });
@@ -302,9 +349,6 @@ DOM.btnCancelCreate.addEventListener("click", () => {
 
 // === INICIALIZACIÓN ===
 
-/**
- * Inicializa la aplicación al cargar la página
- */
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Aplicación iniciada");
   checkSession();
