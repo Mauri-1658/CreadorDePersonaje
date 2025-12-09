@@ -196,30 +196,22 @@ function createCharacterCard(character) {
 // === FUNCIONES DE ACCIONES ===
 
 /**
- * Elimina un personaje
+ * Elimina un personaje con confirmación
  */
 async function handleDeleteCharacter(characterId, characterName) {
-    console.log('[DELETE] Intentando eliminar:', { characterId, characterName });
-    
     if (!confirm(`¿Estás seguro de eliminar a "${characterName}"?`)) return;
 
     try {
         showLoading(true);
 
-        const requestBody = { id: parseInt(characterId, 10) };
-        console.log('[DELETE] Enviando request:', requestBody);
-
         const response = await fetch(`${API_BASE}/characters.php`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify({ id: parseInt(characterId, 10) })
         });
 
-        console.log('[DELETE] Response status:', response.status);
-        
         const data = await response.json();
-        console.log('[DELETE] Response data:', data);
 
         if (data.success) {
             showToast(`Personaje "${characterName}" eliminado`, 'success');
@@ -228,7 +220,7 @@ async function handleDeleteCharacter(characterId, characterName) {
             showToast(data.message || 'Error al eliminar', 'error');
         }
     } catch (error) {
-        console.error('[DELETE] Error:', error);
+        console.error('Error al eliminar:', error);
         showToast('Error de conexión', 'error');
     } finally {
         showLoading(false);
